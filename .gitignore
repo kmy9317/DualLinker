@@ -72,3 +72,11 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Ignore large asset files (stored in Google Drive)
+Content/
+*.uasset
+*.umap
+*.fbx
+*.png
+*.wav
