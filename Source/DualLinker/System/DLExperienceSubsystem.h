@@ -27,6 +27,7 @@ public:
 
     bool IsExperienceLoaded() const;
     const UDLExperienceDefinition* GetCurrentExperienceChecked() const;
+    void ResetLoadingState();
 
     FOnExperienceLoaded OnExperienceLoaded;
 

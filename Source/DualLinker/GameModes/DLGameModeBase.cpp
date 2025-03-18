@@ -32,7 +32,8 @@ void ADLGameModeBase::InitGameState()
 
     if (UDLExperienceSubsystem * ExperienceSubsystem = GetGameInstance()->GetSubsystem<UDLExperienceSubsystem>())
     {
-        ExperienceSubsystem->CallOrRegister_OnExperienceLoaded(FOnExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
+        ExperienceSubsystem->ResetLoadingState();
+        ExperienceSubsystem->CallOrRegister_OnExperienceLoaded(FOnExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));     
     }
 }
 
@@ -84,25 +85,26 @@ void ADLGameModeBase::RequestLoadingExperience()
 
     if (ExperienceSubsystem)
     {
-        // Asset Manager에서 UDLExperienceDefinition 검색 및 로드
+        FPrimaryAssetId ExperienceId;
         UAssetManager& AssetManager = UAssetManager::Get();
-        TArray<FPrimaryAssetId> ExperienceAssets;
 
-        // 등록된 PrimaryAssetType을 기반으로 ExperienceDefinitions 검색
-        AssetManager.GetPrimaryAssetIdList(FPrimaryAssetType("DLExperienceDefinition"), ExperienceAssets);
-
-        if (ExperienceAssets.Num() > 0)
+        // fall back to the default experience
+        // 일단 기본 옵션으로 default하게 B_DLDefaultExperience로 설정하자
+        if (!ExperienceId.IsValid() && UGameplayStatics::HasOption(OptionsString, TEXT("Experience")))
         {
-            // 첫 번째 ExperienceDefinition을 로드
-            FPrimaryAssetId SelectedAsset = ExperienceAssets[0];
-            FSoftObjectPath AssetPath = AssetManager.GetPrimaryAssetPath(SelectedAsset);
+            // Experience의 Value를 가져와서, PrimaryAssetId를 생성해준다. 이때, DLExperienceDefintion의 Class 이름을 사용한다
+            const FString ExperienceFromOptions = UGameplayStatics::ParseOption(OptionsString, TEXT("Experience"));
 
-            ExperienceSubsystem->LoadExperience(TSoftObjectPtr<UDLExperienceDefinition>(AssetPath));
+            // 철자 오류 및 스캔이 안된 경우를 제외하고 제대로 된 값을 가져온다.
+            // FPrimaryAssetType은 프로젝트 세팅에서 AssetBaseClass에 지정한 타입들에 대한 에셋들에 일종의 카테고리 이름이다.
+            // FName인자는 이 카테고리 내 특정 에셋을 가져오기 위한 것.
+            ExperienceId = FPrimaryAssetId(FPrimaryAssetType(UDLExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromOptions));
         }
-        else
+        if (!ExperienceId.IsValid())
         {
-            UE_LOG(LogTemp, Error, TEXT("No ExperienceDefinition found in AssetManager!"));
-        }
+            ExperienceId = FPrimaryAssetId(FPrimaryAssetType("DLExperienceDefinition"), FName("B_DefaultExperience"));
+        }       
+        ExperienceSubsystem->LoadExperience(TSoftObjectPtr<UDLExperienceDefinition>(AssetManager.GetPrimaryAssetPath(ExperienceId)));
     }
 }
 
@@ -138,7 +140,7 @@ void ADLGameModeBase::OnExperienceLoaded(const UDLExperienceDefinition* CurrentE
             // PawnDataList에서 첫 번째 요소 가져오기
             if (CurrentExperience->PawnDataList.Num() > 0 && CurrentExperience->PawnDataList[0].IsValid())
             {
-                UDLPawnData* PawnData = CurrentExperience->PawnDataList[0].LoadSynchronous();
+                UDLPawnData* PawnData = CurrentExperience->PawnDataList[0].Get();
                 if (PawnData && PawnData->InputConfig)
                 {
                     // PlayerController에서 입력 설정

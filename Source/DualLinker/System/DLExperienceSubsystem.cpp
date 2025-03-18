@@ -21,7 +21,6 @@ void UDLExperienceSubsystem::CallOrRegister_OnExperienceLoaded(FOnExperienceLoad
 
 void UDLExperienceSubsystem::LoadExperience(TSoftObjectPtr<UDLExperienceDefinition> NewExperienceDefinition)
 {
-    bIsExperienceLoaded = false;
     if (UAssetManager* AssetManager = UAssetManager::GetIfInitialized())
     {
         FStreamableManager& Streamable = AssetManager->GetStreamableManager();
@@ -99,4 +98,10 @@ const UDLExperienceDefinition* UDLExperienceSubsystem::GetCurrentExperienceCheck
 {
     if (bIsExperienceLoaded && CurrentExperience != nullptr) return CurrentExperience;
     return nullptr;
+}
+
+void UDLExperienceSubsystem::ResetLoadingState()
+{
+    bIsExperienceLoaded = false;
+    CurrentExperience = nullptr;
 }
