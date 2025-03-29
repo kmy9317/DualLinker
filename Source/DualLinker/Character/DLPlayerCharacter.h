@@ -6,6 +6,9 @@
 #include "DLCharacterBase.h"
 #include "DLPlayerCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
 /**
  * 
  */
@@ -28,5 +31,12 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
     float SprintSpeed = 800.0f;
 
+private:
+protected:
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    TObjectPtr<USpringArmComponent> SpringArm;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    TObjectPtr<UCameraComponent> Camera;
 };

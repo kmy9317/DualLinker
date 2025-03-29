@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "LoadingProcessInterface.h"
 #include "DLExperienceSubsystem.generated.h"
 
 class UDLExperienceDefinition;
@@ -14,11 +15,15 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnExperienceLoaded, const UDLExperienceDefi
  * 
  */
 UCLASS()
-class DUALLINKER_API UDLExperienceSubsystem : public UGameInstanceSubsystem
+class DUALLINKER_API UDLExperienceSubsystem : public UGameInstanceSubsystem, public ILoadingProcessInterface
 {
 	GENERATED_BODY()
 
 public:
+    //~ILoadingProcessInterface interface
+    virtual bool ShouldShowLoadingScreen() const override;
+    //~End of ILoadingProcessInterface
+
     /** 데이터 로드 시작 (이전 데이터의 에셋은 언로드) */
     void LoadExperience(TSoftObjectPtr<UDLExperienceDefinition> NewExperienceDefinition);
 

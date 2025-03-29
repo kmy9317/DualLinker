@@ -29,13 +29,13 @@ void UDLExperienceSubsystem::LoadExperience(TSoftObjectPtr<UDLExperienceDefiniti
         UnloadPreviousExperienceAssets();
         PreviouslyLoadedAssets.Empty();
 
-        FSoftObjectPath APath = NewExperienceDefinition.ToSoftObjectPath();
-        TSubclassOf<UDLExperienceDefinition> AssetClass = Cast<UClass>(APath.TryLoad());
+        FSoftObjectPath NewExperiencePath = NewExperienceDefinition.ToSoftObjectPath();
+        TSubclassOf<UDLExperienceDefinition> AssetClass = Cast<UClass>(NewExperiencePath.TryLoad());
 
         CurrentExperience = AssetClass->GetDefaultObject<UDLExperienceDefinition>();
         //check(CurrentExperience == nullptr);
 
-        PreviouslyLoadedAssets.Add(NewExperienceDefinition.ToSoftObjectPath());
+        PreviouslyLoadedAssets.Add(NewExperiencePath);
         TArray<FSoftObjectPath> AssetsToLoad;
 
         for (const auto& PawnData : CurrentExperience->PawnDataList)
@@ -54,7 +54,7 @@ void UDLExperienceSubsystem::LoadExperience(TSoftObjectPtr<UDLExperienceDefiniti
                     if (WeakThis.IsValid())
                     {
                         UDLExperienceSubsystem* Subsystem = WeakThis.Get();
-                        // 경험 로드 완료 이벤트 호출
+                        // Experience 로드 완료 이벤트 호출
                         Subsystem->OnAssetLoaded();
                     }
                 });
@@ -87,6 +87,7 @@ void UDLExperienceSubsystem::OnAssetLoaded()
 {
     bIsExperienceLoaded = true;
     OnExperienceLoaded.Broadcast(CurrentExperience);
+
 }
 
 bool UDLExperienceSubsystem::IsExperienceLoaded() const
@@ -104,4 +105,9 @@ void UDLExperienceSubsystem::ResetLoadingState()
 {
     bIsExperienceLoaded = false;
     CurrentExperience = nullptr;
+}
+
+bool UDLExperienceSubsystem::ShouldShowLoadingScreen() const
+{
+    return !IsExperienceLoaded();
 }
