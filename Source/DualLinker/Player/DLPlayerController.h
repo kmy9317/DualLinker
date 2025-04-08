@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "DualLinker/Camera/DLCameraAssistInterface.h"
 #include "DLPlayerController.generated.h"
 
-class UCharacterControlComponent;
 class UInputMappingContext;
 class UDLInputConfig;
+class UDLCameraMode;
 
 struct FInputActionValue;
 
@@ -16,13 +17,18 @@ struct FInputActionValue;
  * 
  */
 UCLASS()
-class DUALLINKER_API ADLPlayerController : public APlayerController
+class DUALLINKER_API ADLPlayerController : public APlayerController, public IDLCameraAssistInterface
 {
     GENERATED_BODY()
 public:
     ADLPlayerController();
 
     void BindInputActions(UDLInputConfig* InInputConfig);
+
+    //~IDLCameraAssistInterface interface
+    virtual void OnCameraPenetratingTarget() override;
+    //~End of IDLCameraAssistInterface interface
+
 
 protected:
     virtual void BeginPlay() override;
@@ -32,11 +38,14 @@ protected:
 public:
     // Enhanced Input √ ±‚»≠
     void SetupEnhancedInput();
+    void SetupDefaultCameraMode(const TSubclassOf<UDLCameraMode> CameraMode);
 
 private:
 
     void Input_Move(const FInputActionValue& Value);
     void Input_LookMouse(const FInputActionValue& Value);
+
+    TSubclassOf<UDLCameraMode> DetermineCameraMode() const;
 
     UFUNCTION()
     void ApplyLoadedInputMapping(UInputMappingContext* LoadedMapping);
@@ -44,6 +53,5 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UInputMappingContext> DLContext;
 
-    UPROPERTY()
-    TObjectPtr<UCharacterControlComponent> CharacterControl;
+    TSubclassOf<UDLCameraMode> DefaultCameraMode;
 };

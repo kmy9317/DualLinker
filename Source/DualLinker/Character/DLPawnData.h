@@ -7,6 +7,7 @@
 #include "DLPawnData.generated.h"
 
 class UDLInputConfig;
+class UDLCameraMode;
 
 /**
  * 
@@ -24,4 +25,6 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
     TObjectPtr<UDLInputConfig> InputConfig; 
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
+    TSubclassOf<UDLCameraMode> DefaultCameraMode;
 };

@@ -3,22 +3,12 @@
 
 #include "DLPlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
+#include "DualLinker/Camera/DLCameraComponent.h"
 
 ADLPlayerCharacter::ADLPlayerCharacter()
 {
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(RootComponent);
-
-	SpringArm->TargetArmLength = 400.0f;  
-	SpringArm->SocketOffset = FVector(0.0f, 50.0f, 50.0f);
-	SpringArm->bUsePawnControlRotation = true;  
-
-	// 카메라 생성 (SpringArm 끝에 부착)
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
-	Camera->bUsePawnControlRotation = false;  
-	Camera->FieldOfView = 90.0f; 
+	CameraComponent = CreateDefaultSubobject<UDLCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->SetRelativeLocation(FVector(-300.f, 0.f, 75.f));
 }
 
 void ADLPlayerCharacter::BeginPlay()

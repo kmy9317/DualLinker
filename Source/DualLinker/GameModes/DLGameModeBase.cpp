@@ -11,6 +11,7 @@
 #include "DualLinker/Input/DLInputConfig.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/AssetManager.h"
+#include "DualLinker/Camera/DLCameraMode.h"
 
 ADLGameModeBase::ADLGameModeBase()
 {
@@ -145,6 +146,11 @@ void ADLGameModeBase::OnExperienceLoaded(const UDLExperienceDefinition* CurrentE
                 {
                     // PlayerController에서 입력 설정
                     DLPC->BindInputActions(PawnData->InputConfig);
+                }
+                if (PawnData && PawnData->DefaultCameraMode)
+                {
+                    // PlayerController에서 입력 설정
+                    DLPC->SetupDefaultCameraMode(PawnData->DefaultCameraMode);
                 }
             }
         }

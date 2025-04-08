@@ -145,6 +145,11 @@ void UDLLoadingScreenManager::ShowLoadingScreen()
 
 void UDLLoadingScreenManager::HideLoadingScreen()
 {
+    if (!bCurrentlyShowingLoadingScreen)
+    {
+        return;
+    }
+    
     if (ActiveLoadingWidget.IsValid())
     {
         if (UGameViewportClient* GameViewportClient = GetGameInstance()->GetGameViewportClient())

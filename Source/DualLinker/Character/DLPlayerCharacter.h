@@ -7,7 +7,7 @@
 #include "DLPlayerCharacter.generated.h"
 
 class USpringArmComponent;
-class UCameraComponent;
+class UDLCameraComponent;
 
 /**
  * 
@@ -35,8 +35,5 @@ private:
 protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-    TObjectPtr<USpringArmComponent> SpringArm;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-    TObjectPtr<UCameraComponent> Camera;
+    TObjectPtr<UDLCameraComponent> CameraComponent;
 };
