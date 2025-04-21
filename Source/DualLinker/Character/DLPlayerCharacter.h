@@ -17,7 +17,7 @@ class DUALLINKER_API ADLPlayerCharacter : public ADLCharacterBase
 {
 	GENERATED_BODY()
 public:
-    ADLPlayerCharacter();
+    ADLPlayerCharacter(const FObjectInitializer& ObjectInitializer);
 
     virtual void Move(const FVector2D& InputVector);
     virtual void Look(const FVector2D& InputVector);

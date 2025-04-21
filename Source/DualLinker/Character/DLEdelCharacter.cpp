@@ -3,8 +3,10 @@
 
 #include "DLEdelCharacter.h"
 
-ADLEdelCharacter::ADLEdelCharacter()
+ADLEdelCharacter::ADLEdelCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
+
 }
 
 void ADLEdelCharacter::BeginPlay()

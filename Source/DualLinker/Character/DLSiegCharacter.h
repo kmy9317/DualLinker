@@ -15,7 +15,7 @@ class DUALLINKER_API ADLSiegCharacter : public ADLPlayerCharacter
 	GENERATED_BODY()
 
 public:
-    ADLSiegCharacter();
+    ADLSiegCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
     virtual void BeginPlay() override;

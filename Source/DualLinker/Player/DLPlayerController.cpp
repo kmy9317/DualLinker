@@ -67,9 +67,64 @@ void ADLPlayerController::BindInputActions(UDLInputConfig* InInputConfig)
     DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_Look_Mouse, ETriggerEvent::Triggered, this, &ThisClass::Input_LookMouse, false);
 }
 
+void ADLPlayerController::UpdateHiddenComponents(const FVector& ViewLocation, TSet<FPrimitiveComponentId>& OutHiddenComponents)
+{
+    // OutHiddenComponents는 렌더링 엔진이 무시할 컴포넌트들
+    Super::UpdateHiddenComponents(ViewLocation, OutHiddenComponents);
+
+    if (bHideViewTargetPawnNextFrame)
+    {
+        AActor* const ViewTargetPawn = PlayerCameraManager ? Cast<AActor>(PlayerCameraManager->GetViewTarget()) : nullptr;
+        if (ViewTargetPawn)
+        {
+            auto AddToHiddenComponents = [&OutHiddenComponents](const TInlineComponentArray<UPrimitiveComponent*>& InComponents)
+                {
+                    for (UPrimitiveComponent* Comp : InComponents)
+                    {
+                        // 컴포넌트가 월드에 등록되어 있어야 렌더링 정보 존재
+                        if (Comp->IsRegistered())
+                        {
+                            // 렌더링 시스템에서 식별하는 ID
+                            OutHiddenComponents.Add(Comp->GetPrimitiveSceneId());
+
+                            for (USceneComponent* AttachedChild : Comp->GetAttachChildren())
+                            {
+                                static FName NAME_NoParentAutoHide(TEXT("NoParentAutoHide"));
+                                UPrimitiveComponent* AttachChildPC = Cast<UPrimitiveComponent>(AttachedChild);
+                                if (AttachChildPC && AttachChildPC->IsRegistered() && !AttachChildPC->ComponentTags.Contains(NAME_NoParentAutoHide))
+                                {
+                                    OutHiddenComponents.Add(AttachChildPC->GetPrimitiveSceneId());
+                                }
+                            }
+                        }
+                    }
+                };
+
+            //TODO 모든 컴포넌트를 숨기지 않고 일부만 숨기고 싶을 경우 이 처리를 인터페이스 기반으로 위임
+            //TODO 거리 기반 투명도 조절 등으로 좀 더 부드럽게 처리
+
+            // 폰의 컴포넌트들을 hidden 로직
+            TInlineComponentArray<UPrimitiveComponent*> PawnComponents;
+            ViewTargetPawn->GetComponents(PawnComponents);
+            AddToHiddenComponents(PawnComponents);
+
+            //// 무기 숨기기
+            //if (ViewTargetPawn->CurrentWeapon)
+            //{
+            //	TInlineComponentArray<UPrimitiveComponent*> WeaponComponents;
+            //	ViewTargetPawn->CurrentWeapon->GetComponents(WeaponComponents);
+            //	AddToHiddenComponents(WeaponComponents);
+            //}
+        }
+
+        bHideViewTargetPawnNextFrame = false;
+    }
+}
+
 void ADLPlayerController::OnCameraPenetratingTarget()
 {
     // TODO: Hidden 로직
+    bHideViewTargetPawnNextFrame = true;
 }
 
 void ADLPlayerController::Input_Move(const FInputActionValue& Value)

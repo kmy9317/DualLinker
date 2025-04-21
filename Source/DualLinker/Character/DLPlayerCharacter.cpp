@@ -4,8 +4,10 @@
 #include "DLPlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DualLinker/Camera/DLCameraComponent.h"
+#include "Managers/DLCharacterPartsManager_Hero.h"
 
-ADLPlayerCharacter::ADLPlayerCharacter()
+ADLPlayerCharacter::ADLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDLCharacterPartsManager_Hero>(TEXT("CharacterPartsManager")))
 {
 	CameraComponent = CreateDefaultSubobject<UDLCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetRelativeLocation(FVector(-300.f, 0.f, 75.f));

@@ -49,11 +49,12 @@ public:
 	float ReportPenetrationPercent = 0.f;
 
 	/**
-	 * These are the feeler rays that are used to find where to place the camera.
-	 * Index: 0  : This is the normal feeler we use to prevent collisions.
-	 * Index: 1+ : These feelers are used if you bDoPredictiveAvoidance=true, to scan for potential impacts if the player
-	 *             were to rotate towards that direction and primitively collide the camera so that it pulls in before
-	 *             impacting the occluder.
+	 * 카메라가 오브젝트나 월드 geometry에 너무 가까워지거나, 관통하지 않도록 안전한 위치로 보정하는 역할
+	 * Index: 0  : 기본 feeler로 가장 중심(주요, 중앙) ray를 사용하여 주된 충돌 감지를 수행
+	 *			   이 feeler는 기본적으로 카메라와 SafeLocation 사이의 충돌 여부를 결정하는 기준이 됨
+	 * Index: 1+ : 보조(또는 예측) feeler로서, 만약 bDoPredictiveAvoidance가 true인 경우 사용
+	 *             이 feeler들은 플레이어가 현재 방향에서 벗어나 다른 방향(예측 가능한 회전 방향)으로 이동할 가능성을 미리 탐지하여
+	 *			   카메라가 갑자기 충돌하는 것을 미리 감지하고 카메라 위치 보정을 미리 준비할 수 있게 함      
 	 */
 	UPROPERTY(EditDefaultsOnly, Category = "Collision")
 	TArray<FDLPenetrationAvoidanceFeeler> PenetrationAvoidanceFeelers;

@@ -25,20 +25,26 @@ public:
 
     void BindInputActions(UDLInputConfig* InInputConfig);
 
+    //~APlayerController interface
+    virtual void UpdateHiddenComponents(const FVector& ViewLocation, TSet<FPrimitiveComponentId>& OutHiddenComponents) override;
+    //~End of APlayerController interface
+
     //~IDLCameraAssistInterface interface
     virtual void OnCameraPenetratingTarget() override;
     //~End of IDLCameraAssistInterface interface
 
-
-protected:
-    virtual void BeginPlay() override;
-    virtual void SetupInputComponent() override;
-
-
-public:
     // Enhanced Input √ ±‚»≠
     void SetupEnhancedInput();
     void SetupDefaultCameraMode(const TSubclassOf<UDLCameraMode> CameraMode);
+
+protected:
+    //~APlayerController interface
+    virtual void BeginPlay() override;
+    virtual void SetupInputComponent() override;
+    //~End of APlayerController interface
+
+protected:
+    bool bHideViewTargetPawnNextFrame = false;
 
 private:
 
@@ -54,4 +60,6 @@ private:
     TObjectPtr<UInputMappingContext> DLContext;
 
     TSubclassOf<UDLCameraMode> DefaultCameraMode;
+
+
 };

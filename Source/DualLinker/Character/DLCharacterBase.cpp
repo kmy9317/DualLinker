@@ -2,16 +2,26 @@
 
 
 #include "DLCharacterBase.h"
+#include "Managers/DLCharacterPartsManager.h"
+#include "Managers/DLCharacterPartsManager_Hero.h"
 
-ADLCharacterBase::ADLCharacterBase()
+ADLCharacterBase::ADLCharacterBase(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+    CharacterPartsManager = CreateDefaultSubobject<UDLCharacterPartsManager>(TEXT("CharacterPartsManager"));
+   
 }
 
 void ADLCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ADLCharacterBase::PostInitializeComponents()
+{
+    Super::PostInitializeComponents();
+    CharacterPartsManager->OwnerCharacterType = CharacterType;
 }
 
 void ADLCharacterBase::TakeDamage(float Damage)

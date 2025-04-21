@@ -95,6 +95,7 @@ public:
 	float BlendExponent;
 
 	/** Blend function */
+	UPROPERTY(EditDefaultsOnly, Category = "Blending")
 	EDLCameraModeBlendFunction BlendFunction;
 
 	/** If true, skips all interpolation and puts camera in ideal location.  Automatically set to false next frame. */

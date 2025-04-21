@@ -14,7 +14,7 @@ class DUALLINKER_API ADLEdelCharacter : public ADLPlayerCharacter
 {
 	GENERATED_BODY()
 public:
-    ADLEdelCharacter();
+    ADLEdelCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
     virtual void BeginPlay() override;

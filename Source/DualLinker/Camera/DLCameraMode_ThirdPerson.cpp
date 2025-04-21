@@ -5,6 +5,8 @@
 #include "Curves/CurveVector.h"
 #include "DLCameraAssistInterface.h"
 #include "GameFramework/CameraBlockingVolume.h"
+#include "DrawDebugHelpers.h"
+
 
 namespace DLCameraMode_ThirdPerson_Statics
 {
@@ -125,7 +127,9 @@ void UDLCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 
 void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarget, FVector const& SafeLoc, FVector& CameraLoc, float const& DeltaTime, float& DistBlockedPct, bool bSingleRayOnly)
 {
+	// 메인 feeler 차단 비율
 	float HardBlockedPct = DistBlockedPct;
+	// 주변 feeler들의 평균적 차단 비율
 	float SoftBlockedPct = DistBlockedPct;
 
 	FVector BaseRay = CameraLoc - SafeLoc;
@@ -170,10 +174,10 @@ void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarge
 			// do multi-line check to make sure the hits we throw out aren't
 			// masking real hits behind (these are important rays).
 
-			// MT-> passing camera as actor so that camerablockingvolumes know when it's the camera doing traces
+			// TODO: 추후 IgnoreActor와 그 뒤 충돌 Actor등에 대한 상황으로 인해 SweepMultiByChannel() 사용 고려
 			FHitResult Hit;
 			const bool bHit = World->SweepSingleByChannel(Hit, SafeLoc, RayTarget, FQuat::Identity, TraceChannel, SphereShape, SphereParams);
-			
+
 			Feeler.FramesUntilNextTrace = Feeler.TraceInterval;
 
 			const AActor* HitActor = Hit.GetActor();

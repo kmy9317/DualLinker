@@ -3,8 +3,10 @@
 
 #include "DLSiegCharacter.h"
 
-ADLSiegCharacter::ADLSiegCharacter()
+ADLSiegCharacter::ADLSiegCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
+
 }
 
 void ADLSiegCharacter::BeginPlay()

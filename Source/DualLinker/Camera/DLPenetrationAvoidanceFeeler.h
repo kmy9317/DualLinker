@@ -12,27 +12,26 @@ struct FDLPenetrationAvoidanceFeeler
 {
 	GENERATED_BODY()
 
-	/** FRotator describing deviance from main ray */
+	/** feeler마다 서로 다른 방향(예, 좌측, 우측, 위, 아래 등)으로 Ray를 쏘도록 함 */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	FRotator AdjustmentRot;
 
-	/** how much this feeler affects the final position if it hits the world */
+	/** 이 feeler의 결과가 월드(즉, static geometry)에 충돌했을 때 차단 결과에 얼마나 큰 영향을 미칠지를 결정하는 가중치 */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	float WorldWeight;
 
-	/** how much this feeler affects the final position if it hits a APawn (setting to 0 will not attempt to collide with pawns at all) */
+	/** 이 feeler가 Pawn(예: 다른 캐릭터나 플레이어)의 충돌과 관련된 경우에 적용되는 가중치, 0으로 하면 Pawn과의 충돌 보정X */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	float PawnWeight;
 
-	/** extent to use for collision when tracing this feeler */
+	/** 트레이스의 민감도와 충돌 영역의 크기를 결정 */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	float Extent;
 
-	/** minimum frame interval between traces with this feeler if nothing was hit last frame */
+	/** feeler를 언제 다시 트레이스할지(매 프레임마다 검사하지 않고 일정한 간격으로 검사) 제어 */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	int32 TraceInterval;
 
-	/** number of frames since this feeler was used */
 	UPROPERTY(transient)
 	int32 FramesUntilNextTrace;
 
