@@ -4,10 +4,11 @@
 #include "DLPlayerState.h"
 #include "DualLinker/System/DLExperienceSubsystem.h"
 #include "DualLinker/GameModes/DLGameModeBase.h"
+#include "DualLinker/AbilitySystem/DLAbilitySystemComponent.h"
 
 ADLPlayerState::ADLPlayerState()
 {
-
+	AbilitySystemComponent = CreateDefaultSubobject<UDLAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 }
 
 void ADLPlayerState::PostInitializeComponents()

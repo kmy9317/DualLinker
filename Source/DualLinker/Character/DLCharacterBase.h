@@ -5,18 +5,22 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "DualLinker/DLDefine.h"
+#include "AbilitySystemInterface.h"
 
 #include "DLCharacterBase.generated.h"
 
 class UDLCharacterPartsManager;
+class UDLAbilitySystemComponent;
 
 UCLASS()
-class DUALLINKER_API ADLCharacterBase : public ACharacter
+class DUALLINKER_API ADLCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
     ADLCharacterBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+    virtual UAbilitySystemComponent* GetAbilitySystemComponent() const;
 
 protected:
     virtual void BeginPlay() override;
@@ -29,12 +33,15 @@ protected:
     float MaxHealth = 100.0f;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Parts")
-    TObjectPtr<UDLCharacterPartsManager> CharacterPartsManager;
+    TObjectPtr<UDLCharacterPartsManager> CharacterPartsManager = nullptr;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character|Types")
     ECharacterType CharacterType = ECharacterType::Count;
 
 public:
+    UPROPERTY()
+    mutable UDLAbilitySystemComponent* AbilitySystemComponent;
+
     //- Begin ActorInterface
     virtual void PostInitializeComponents() override;
     //- End ActorInterface

@@ -11,6 +11,8 @@
 #include "DualLinker/Camera/DLPlayerCameraManager.h"
 #include "DualLinker/Camera/DLCameraComponent.h"
 #include "DualLinker/Camera/DLCameraMode.h"
+#include "DualLinker/AbilitySystem/DLAbilitySystemComponent.h"
+#include "DLPlayerState.h"
 
 ADLPlayerController::ADLPlayerController()
 {
@@ -56,6 +58,19 @@ void ADLPlayerController::SetupDefaultCameraMode(const TSubclassOf<UDLCameraMode
 void ADLPlayerController::SetupInputComponent()
 {
     Super::SetupInputComponent();
+}
+
+void ADLPlayerController::OnPossess(APawn* NewPawn)
+{
+    Super::OnPossess(NewPawn);
+
+    if (UAbilitySystemComponent* ASC = Cast<IAbilitySystemInterface>(NewPawn)->GetAbilitySystemComponent())
+    {
+        ASC->InitAbilityActorInfo(
+            GetPlayerState<ADLPlayerState>(),
+            NewPawn
+        );
+    }
 }
 
 void ADLPlayerController::BindInputActions(UDLInputConfig* InInputConfig)

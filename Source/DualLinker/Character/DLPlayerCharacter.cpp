@@ -5,12 +5,22 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "DualLinker/Camera/DLCameraComponent.h"
 #include "Managers/DLCharacterPartsManager_Hero.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ADLPlayerCharacter::ADLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDLCharacterPartsManager_Hero>(TEXT("CharacterPartsManager")))
 {
 	CameraComponent = CreateDefaultSubobject<UDLCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetRelativeLocation(FVector(-300.f, 0.f, 75.f));
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
+	GetCharacterMovement()->MaxWalkSpeed = 400.f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 }
 
 void ADLPlayerCharacter::BeginPlay()

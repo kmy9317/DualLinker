@@ -8,6 +8,7 @@
 
 class UDLExperienceDefinition;
 class UDLPawnData;
+class UDLAbilitySystemComponent;
 
 /**
  * 
@@ -24,7 +25,11 @@ public:
 	const T* GetPawnData() const { return Cast<T>(PawnData); }
 	void OnExperienceLoaded(const UDLExperienceDefinition* CurrentExperience);
 	void SetPawnData(const UDLPawnData* InPawnData);
+	UDLAbilitySystemComponent* GetDLAbilitySystemComponent() const { return AbilitySystemComponent; }
 
 	UPROPERTY()
 	TObjectPtr<const UDLPawnData> PawnData;
+
+	UPROPERTY(VisibleAnywhere, Category = "DL|PlayerState")
+	TObjectPtr<UDLAbilitySystemComponent> AbilitySystemComponent;
 };

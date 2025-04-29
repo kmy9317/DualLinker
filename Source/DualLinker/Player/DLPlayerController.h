@@ -41,6 +41,7 @@ protected:
     //~APlayerController interface
     virtual void BeginPlay() override;
     virtual void SetupInputComponent() override;
+    virtual void OnPossess(APawn* NewPawn) override;
     //~End of APlayerController interface
 
 protected:

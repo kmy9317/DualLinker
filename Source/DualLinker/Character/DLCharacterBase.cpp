@@ -2,6 +2,8 @@
 
 
 #include "DLCharacterBase.h"
+#include "DualLinker/Player/DLPlayerState.h"
+#include "DualLinker/AbilitySystem/DLAbilitySystemComponent.h"
 #include "Managers/DLCharacterPartsManager.h"
 #include "Managers/DLCharacterPartsManager_Hero.h"
 
@@ -22,6 +24,21 @@ void ADLCharacterBase::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
     CharacterPartsManager->OwnerCharacterType = CharacterType;
+}
+
+UAbilitySystemComponent* ADLCharacterBase::GetAbilitySystemComponent() const
+{
+    if (AbilitySystemComponent) return AbilitySystemComponent;
+
+    if (ADLPlayerState* PS = GetPlayerState<ADLPlayerState>())
+    {
+        if (UAbilitySystemComponent* ASC = PS->GetDLAbilitySystemComponent())
+        {
+            return AbilitySystemComponent = Cast<UDLAbilitySystemComponent>(ASC);
+        }      
+    }
+
+    return nullptr;
 }
 
 void ADLCharacterBase::TakeDamage(float Damage)
