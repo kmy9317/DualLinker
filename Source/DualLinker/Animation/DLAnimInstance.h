@@ -13,7 +13,7 @@ class UCharacterMovementComponent;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class DUALLINKER_API UDLAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()

@@ -31,5 +31,16 @@ void FDLGameplayTags::InitializeNativeGameplayTags()
 		FName("InputTag.Look.Mouse"),
 		FString("")
 	);
+
+	// TEMP
+	GameplayTags.InputTag_Unequip = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Unequip"),
+		FString("")
+	);
+
+	GameplayTags.Player_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Status.Equipped"),
+		FString("")
+	);
 }
 

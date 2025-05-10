@@ -8,6 +8,9 @@
 
 class USpringArmComponent;
 class UDLCameraComponent;
+class UDLEquipmentManagerComponent;
+class UDLEquipManagerComponent;
+class ADLPlayerController;
 
 /**
  * 
@@ -18,6 +21,9 @@ class DUALLINKER_API ADLPlayerCharacter : public ADLCharacterBase
 	GENERATED_BODY()
 public:
     ADLPlayerCharacter(const FObjectInitializer& ObjectInitializer);
+
+    UFUNCTION(BlueprintCallable, Category = "DL|Character")
+    ADLPlayerController* GetDLPlayerController() const;
 
     virtual void Move(const FVector2D& InputVector);
     virtual void Look(const FVector2D& InputVector);
@@ -31,9 +37,16 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
     float SprintSpeed = 800.0f;
 
-private:
-protected:
-
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
     TObjectPtr<UDLCameraComponent> CameraComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment")
+    TObjectPtr<UDLEquipmentManagerComponent> EquipmentManagerComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment")
+    TObjectPtr<UDLEquipManagerComponent> EquipManagerComponent;
+
+public:
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    int32 DefaultWeaponID = 1001;
 };

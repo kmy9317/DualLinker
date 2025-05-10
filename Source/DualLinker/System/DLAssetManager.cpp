@@ -4,6 +4,7 @@
 #include "Logging/LogMacros.h"
 #include "DualLinker/DLGameplayTags.h"
 #include "DualLinker/Data/DLCharacterPartsData.h"
+#include "DualLinker/Data/DLItemData.h"
 
 UDLAssetManager& UDLAssetManager::Get()
 {
@@ -17,7 +18,31 @@ void UDLAssetManager::StartInitialLoading()
     Super::StartInitialLoading();
 
 	GetOrLoadTypedGameData<UDLCharacterPartsData>(CharacterDataPath);
+	GetOrLoadTypedGameData<UDLItemData>(ItemDataPath);
     FDLGameplayTags::InitializeNativeGameplayTags();
+}
+
+UObject* UDLAssetManager::SynchronousLoadAsset(const FSoftObjectPath& AssetPath)
+{
+	if (AssetPath.IsValid())
+	{
+		if (UAssetManager::IsInitialized())
+		{
+			return UAssetManager::GetStreamableManager().LoadSynchronous(AssetPath, false);
+		}
+		// Use LoadObject if asset manager isn't ready yet.
+		return AssetPath.TryLoad();
+	}
+	return nullptr;
+}
+
+void UDLAssetManager::AddLoadedAsset(const UObject* Asset)
+{
+	if (ensureAlways(Asset))
+	{
+		FScopeLock LoadedAssetsLock(&LoadedAssetsCritical);
+		LoadedAssets.Add(Asset);
+	}
 }
 
 UPrimaryDataAsset* UDLAssetManager::LoadGameDataOfClass(TSubclassOf<UPrimaryDataAsset> DataClass, const TSoftObjectPtr<UPrimaryDataAsset>& DataClassPath, FPrimaryAssetType PrimaryAssetType)
@@ -59,4 +84,9 @@ UPrimaryDataAsset* UDLAssetManager::LoadGameDataOfClass(TSubclassOf<UPrimaryData
 const UDLCharacterPartsData& UDLAssetManager::GetDefaultCharacterPartsData()
 {
     return GetOrLoadTypedGameData<UDLCharacterPartsData>(CharacterDataPath);
+}
+
+const UDLItemData& UDLAssetManager::GetItemData()
+{
+	return GetOrLoadTypedGameData<UDLItemData>(ItemDataPath);
 }

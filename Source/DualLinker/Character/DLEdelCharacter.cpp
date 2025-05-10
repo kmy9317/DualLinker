@@ -2,6 +2,8 @@
 
 
 #include "DLEdelCharacter.h"
+#include "DualLinker/Equipment/DLEquipmentManagerComponent.h"
+#include "DualLinker/Data/DLItemData.h"
 
 ADLEdelCharacter::ADLEdelCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -12,5 +14,6 @@ ADLEdelCharacter::ADLEdelCharacter(const FObjectInitializer& ObjectInitializer)
 void ADLEdelCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 

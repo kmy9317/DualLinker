@@ -27,6 +27,10 @@
 		{
 			"Name": "GameplayAbilities",
 			"Enabled": true
+		},
+		{
+			"Name": "EditorTests",
+			"Enabled": true
 		}
 	]
 }

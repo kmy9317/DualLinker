@@ -6,12 +6,18 @@
 #include "DualLinker/Camera/DLCameraComponent.h"
 #include "Managers/DLCharacterPartsManager_Hero.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DualLinker/Equipment/DLEquipmentManagerComponent.h"
+#include "DualLinker/Equipment/DLEquipManagerComponent.h"
+#include "DualLinker/Player/DLPlayerController.h"
 
 ADLPlayerCharacter::ADLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDLCharacterPartsManager_Hero>(TEXT("CharacterPartsManager")))
 {
 	CameraComponent = CreateDefaultSubobject<UDLCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetRelativeLocation(FVector(-300.f, 0.f, 75.f));
+
+	EquipmentManagerComponent = CreateDefaultSubobject<UDLEquipmentManagerComponent>(TEXT("EquipmentManagerComponent"));
+	EquipManagerComponent = CreateDefaultSubobject<UDLEquipManagerComponent>(TEXT("EquipManagerComponent"));
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -21,6 +27,11 @@ ADLPlayerCharacter::ADLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+}
+
+ADLPlayerController* ADLPlayerCharacter::GetDLPlayerController() const
+{
+	return Cast<ADLPlayerController>(Controller);
 }
 
 void ADLPlayerCharacter::BeginPlay()
