@@ -13,21 +13,13 @@
 #include "DualLinker/Camera/DLCameraMode.h"
 #include "DualLinker/AbilitySystem/DLAbilitySystemComponent.h"
 #include "DLPlayerState.h"
-
-    /**************
-         TEMP
-    **************/
-#include "DualLinker/Equipment/DLEquipmentManagerComponent.h"
-#include "DualLinker/Equipment/DLEquipManagerComponent.h"
-#include "DualLinker/Data/DLItemData.h"
-#include "DualLinker/Item/DLItemTemplate.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "DualLinker/Animation/DLAnimInstance.h"
 #include "Components/SkeletalMeshComponent.h"
 
 ADLPlayerController::ADLPlayerController()
 {
     PlayerCameraManagerClass = ADLPlayerCameraManager::StaticClass();
-
 }
 
 void ADLPlayerController::BeginPlay()
@@ -79,24 +71,15 @@ void ADLPlayerController::OnPossess(APawn* NewPawn)
         ASC->InitAbilityActorInfo(
             GetPlayerState<ADLPlayerState>(),
             NewPawn
-        );
-
-        /**************
-              TEMP
-        **************/
-        if (ADLPlayerCharacter* DLPlayerCharacter = Cast<ADLPlayerCharacter>(NewPawn))
+        );   
+        if (ACharacter* PlayerCharacter = Cast<ACharacter>(NewPawn))
         {
-            if (UDLEquipmentManagerComponent* PlayerEquipmentManager = DLPlayerCharacter->FindComponentByClass<UDLEquipmentManagerComponent>())
-            {
-                const UDLItemTemplate& ItemTemplate = UDLItemData::Get().FindItemTemplateByID(DLPlayerCharacter->DefaultWeaponID);
-                PlayerEquipmentManager->SetEquipment(EEquipmentSlotType::Primary_RightHand, ItemTemplate.GetClass(), 1);
-            }
-            if (UDLAnimInstance* DLAnimInstance = Cast<UDLAnimInstance>(DLPlayerCharacter->GetMesh()->GetAnimInstance()))
+            if (UDLAnimInstance* DLAnimInstance = Cast<UDLAnimInstance>(PlayerCharacter->GetMesh()->GetAnimInstance()))
             {
                 DLAnimInstance->InitializeWithAbilitySystem(ASC);
             }
         }
-    }
+    }  
 }
 
 void ADLPlayerController::BindInputActions(UDLInputConfig* InInputConfig)
@@ -106,7 +89,9 @@ void ADLPlayerController::BindInputActions(UDLInputConfig* InInputConfig)
 
     DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, false);
     DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_Look_Mouse, ETriggerEvent::Triggered, this, &ThisClass::Input_LookMouse, false);
-    DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_Unequip, ETriggerEvent::Triggered, this, &ThisClass::Input_Unequip, false);
+    DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_ChangeEquip_Primary, ETriggerEvent::Triggered, this, &ThisClass::Input_ChangeEquip_Weapon_Primary, false);
+    DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_ChangeEquip_Secondary, ETriggerEvent::Triggered, this, &ThisClass::Input_ChangeEquip_Weapon_Secondary, false);
+
 }
 
 void ADLPlayerController::UpdateHiddenComponents(const FVector& ViewLocation, TSet<FPrimitiveComponentId>& OutHiddenComponents)
@@ -191,16 +176,18 @@ void ADLPlayerController::Input_LookMouse(const FInputActionValue& Value)
     }
 }
 
-void ADLPlayerController::Input_Unequip(const FInputActionValue& Value)
+void ADLPlayerController::Input_ChangeEquip_Weapon_Primary()
 {
-    // TEMP °ð »èÁ¦ ¿¹Á¤
-    if (ADLPlayerCharacter* DLPlayerCharacter = Cast<ADLPlayerCharacter>(GetPawn()))
-    {
-        if (UDLEquipManagerComponent* PlayerEquipmManager = DLPlayerCharacter->FindComponentByClass<UDLEquipManagerComponent>())
-        {
-            PlayerEquipmManager->ChangeEquipState(EEquipState::Unarmed);
-        }      
-    }
+    FGameplayEventData Payload;
+    Payload.EventMagnitude = (int32)EEquipState::Weapon_Primary;
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetPawn(), FDLGameplayTags::Get().GameplayEvent_ChangeEquip, Payload);
+}
+
+void ADLPlayerController::Input_ChangeEquip_Weapon_Secondary()
+{
+    FGameplayEventData Payload;
+    Payload.EventMagnitude = (int32)EEquipState::Weapon_Secondary;
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetPawn(), FDLGameplayTags::Get().GameplayEvent_ChangeEquip, Payload);
 }
 
 TSubclassOf<UDLCameraMode> ADLPlayerController::DetermineCameraMode() const

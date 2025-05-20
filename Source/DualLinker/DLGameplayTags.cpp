@@ -19,9 +19,9 @@ void FDLGameplayTags::InitializeNativeGameplayTags()
 		FString("")
 	);
 
-	/*
-	 * Primary Attributes
-	 */
+	/**
+	* Input Tags
+	*/
 	GameplayTags.InputTag_Move = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.Move"),
 		FString("")
@@ -32,15 +32,44 @@ void FDLGameplayTags::InitializeNativeGameplayTags()
 		FString("")
 	);
 
-	// TEMP
-	GameplayTags.InputTag_Unequip = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("InputTag.Unequip"),
+	GameplayTags.InputTag_ChangeEquip_Primary = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.ChangeEquip.Primary"),
 		FString("")
 	);
 
+	GameplayTags.InputTag_ChangeEquip_Secondary = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.ChangeEquip.Secondary"),
+		FString("")
+	);
+
+	/**
+	*  Ability Tags
+	*/
+	GameplayTags.Ability_ChangeEquip = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.ChangeEquip"),
+		FString("")
+	);
+
+	/**
+	*  Gameplay Event Tags
+	*/
+	GameplayTags.GameplayEvent_ChangeEquip = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("GameplayEvent.ChangeEquip"),
+		FString("")
+	);
+
+	/**
+	* Player Status Tags
+	*/
 	GameplayTags.Player_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Player.Status.Equipped"),
 		FString("")
 	);
+
+	GameplayTags.Player_Status_ChangeEquip = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("GameplayEvent.ChangeEquip"),
+		FString("")
+	);
+
 }
 

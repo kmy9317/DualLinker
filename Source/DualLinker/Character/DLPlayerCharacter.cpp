@@ -9,6 +9,7 @@
 #include "DualLinker/Equipment/DLEquipmentManagerComponent.h"
 #include "DualLinker/Equipment/DLEquipManagerComponent.h"
 #include "DualLinker/Player/DLPlayerController.h"
+#include "DualLinker/Data/DLItemData.h"
 
 ADLPlayerCharacter::ADLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDLCharacterPartsManager_Hero>(TEXT("CharacterPartsManager")))
@@ -34,9 +35,26 @@ ADLPlayerController* ADLPlayerCharacter::GetDLPlayerController() const
 	return Cast<ADLPlayerController>(Controller);
 }
 
+void ADLPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	InitializeDefaultEquipments();
+}
+
 void ADLPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ADLPlayerCharacter::InitializeDefaultEquipments()
+{
+	if (UDLEquipmentManagerComponent* EquipmentManager = FindComponentByClass<UDLEquipmentManagerComponent>())
+	{
+		EquipmentManager->AddUnarmedEquipments(UnarmedLeftHandClass, UnarmedRightHandClass);
+		const UDLItemTemplate& ItemTemplate = UDLItemData::Get().FindItemTemplateByID(DefaultWeaponID);
+		EquipmentManager->SetEquipment(EEquipmentSlotType::Primary_RightHand, ItemTemplate.GetClass(), 1);
+	}
 }
 
 void ADLPlayerCharacter::Move(const FVector2D& InputVector)

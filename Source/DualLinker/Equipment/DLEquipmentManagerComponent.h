@@ -97,6 +97,9 @@ public:
 	// 새로운 장착계열 아이템을 해당하는 슬롯에 장착해주는 함수
 	void SetEquipment(EEquipmentSlotType EquipmentSlotType, TSubclassOf<UDLItemTemplate> ItemTemplateClass, int32 ItemCount);
 
+	// 초기 Unarmed 상태에 대한 Left, Right 장비 장착
+	void AddUnarmedEquipments(TSubclassOf<UDLItemTemplate> LeftHandClass, TSubclassOf<UDLItemTemplate> RightHandClass);
+
 	// 현재 장비 슬롯에 해당하는 Entry의 아이템 정보를 제거하는 로직(현재 장비중인 경우 EquipManager에서 제거)
 	UDLItemInstance* RemoveEquipment(EEquipmentSlotType EquipmentSlotType, int32 ItemCount);
 

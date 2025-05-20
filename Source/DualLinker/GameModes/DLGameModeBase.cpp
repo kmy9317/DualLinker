@@ -11,6 +11,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/AssetManager.h"
 #include "DualLinker/Camera/DLCameraMode.h"
+#include "DualLinker/AbilitySystem/DLAbilitySet.h"
+#include "DualLinker/AbilitySystem/DLAbilitySystemComponent.h"
 
 ADLGameModeBase::ADLGameModeBase()
 {
@@ -137,19 +139,35 @@ void ADLGameModeBase::OnExperienceLoaded(const UDLExperienceDefinition* CurrentE
                     RestartPlayer(DLPC);
                 }
             }
+            // TEMP: 아래 코드를 PlayerState등의 다른 곳으로 옮기는 것 고려
             // PawnDataList에서 첫 번째 요소 가져오기
             if (CurrentExperience->PawnDataList.Num() > 0 && CurrentExperience->PawnDataList[0].IsValid())
             {
                 UDLPawnData* PawnData = CurrentExperience->PawnDataList[0].Get();
-                if (PawnData && PawnData->InputConfig)
+                if (!IsValid(PawnData)) return;
+                if (PawnData->InputConfig)
                 {
                     // PlayerController에서 입력 설정
                     DLPC->BindInputActions(PawnData->InputConfig);
                 }
-                if (PawnData && PawnData->DefaultCameraMode)
+                if (PawnData->DefaultCameraMode)
                 {
                     // PlayerController에서 입력 설정
                     DLPC->SetupDefaultCameraMode(PawnData->DefaultCameraMode);
+                }
+                if (PawnData->AbilitySets.Num() > 0)
+                {
+                    ADLPlayerState* PS = PC->GetPlayerState<ADLPlayerState>();
+                    if (UDLAbilitySystemComponent* ASC = PS->GetDLAbilitySystemComponent())
+                    {
+                        for (const UDLAbilitySet* AbilitySet : PawnData->AbilitySets)
+                        {
+                            if (IsValid(AbilitySet))
+                            {
+                                AbilitySet->GiveToAbilitySystem(ASC, nullptr);
+                            }
+                        }
+                    }
                 }
             }
         }

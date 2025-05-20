@@ -52,8 +52,8 @@ private:
     void Input_Move(const FInputActionValue& Value);
     void Input_LookMouse(const FInputActionValue& Value);
 
-    // TEMP: 추후 Ability로 로직 변경
-    void Input_Unequip(const FInputActionValue& Value);
+    void Input_ChangeEquip_Weapon_Primary();
+    void Input_ChangeEquip_Weapon_Secondary();
 
     TSubclassOf<UDLCameraMode> DetermineCameraMode() const;
 

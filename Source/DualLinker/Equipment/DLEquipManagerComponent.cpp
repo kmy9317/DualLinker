@@ -11,8 +11,6 @@
 #include "DualLinker/Player/DLPlayerController.h"
 #include "DualLinker/System/DLAssetManager.h"
 
-#include "DualLinker/DLGameplayTags.h"
-
 void FDLEquipEntry::Init(UDLItemInstance* InItemInstance)
 {
 	// 이미 같은 아이템 타입인 경우 로직 실행 필요X
@@ -38,8 +36,6 @@ void FDLEquipEntry::Equip()
 		
 	UDLAbilitySystemComponent* ASC = Cast<UDLAbilitySystemComponent>(DLCharacter->GetAbilitySystemComponent());
 	check(ASC);
-
-	ASC->AddLooseGameplayTag(FDLGameplayTags::Get().Player_Status_Equipped);
 
 	// TODO: 이전 Ability 제거 및 현재 장비의 어빌리티 부여
 
@@ -77,7 +73,6 @@ void FDLEquipEntry::Unequip()
 	UDLAbilitySystemComponent* ASC = Cast< UDLAbilitySystemComponent>(DLPlayerCharacter->GetAbilitySystemComponent());
 	check(ASC);
 
-	ASC->RemoveLooseGameplayTag(FDLGameplayTags::Get().Player_Status_Equipped);
 	// TODO: 부여된 Ability및 기타 스텟요소들 제거 로직 예정
 
 	// 실제 소환된 장비의 Actor Destroy
@@ -156,7 +151,7 @@ void UDLEquipManagerComponent::EquipCurrentSlots()
 {
 	if (CurrentEquipState == EEquipState::Count)
 		return;
-	
+
 	if (UDLEquipmentManagerComponent* EquipmentManager = GetEquipmentManager())
 	{
 		for (EEquipmentSlotType EquipmentSlotType : UDLEquipManagerComponent::GetEquipmentSlotsByEquipState(CurrentEquipState))

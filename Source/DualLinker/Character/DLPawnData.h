@@ -8,6 +8,7 @@
 
 class UDLInputConfig;
 class UDLCameraMode;
+class UDLAbilitySet;
 
 /**
  * 
@@ -27,4 +28,7 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
     TSubclassOf<UDLCameraMode> DefaultCameraMode;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DL|Abilities")
+    TArray<TObjectPtr<UDLAbilitySet>> AbilitySets;
 };

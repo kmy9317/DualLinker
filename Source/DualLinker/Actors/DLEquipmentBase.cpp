@@ -9,6 +9,8 @@
 #include "DualLinker/Data/DLItemData.h"
 #include "Kismet/KismetMathLibrary.h"
 
+#include "DualLinker/DLGameplayTags.h"
+
 ADLEquipmentBase::ADLEquipmentBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -19,7 +21,7 @@ ADLEquipmentBase::ADLEquipmentBase()
 	SetRootComponent(ArrowComponent);
 	
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
-	//MeshComponent->SetCollisionProfileName("Weapon");
+	MeshComponent->SetCollisionProfileName("Weapon");
 	MeshComponent->SetGenerateOverlapEvents(false);
 	MeshComponent->SetupAttachment(GetRootComponent());
 	MeshComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
@@ -36,6 +38,8 @@ void ADLEquipmentBase::Destroyed()
 {
 	if (ADLPlayerCharacter* DLPlayerCharacter = Cast<ADLPlayerCharacter>(GetOwner()))
 	{	
+		UDLAbilitySystemComponent* ASC = Cast<UDLAbilitySystemComponent>(DLPlayerCharacter->GetAbilitySystemComponent());
+
 		if (UDLEquipManagerComponent* EquipManager = DLPlayerCharacter->FindComponentByClass<UDLEquipManagerComponent>())
 		{
 			TArray<FDLEquipEntry>& Entries = EquipManager->GetAllEntries();
@@ -91,9 +95,12 @@ void ADLEquipmentBase::ProcessEquip_Implementation(UDLItemInstance* ItemInstance
 	ADLPlayerCharacter* DLPlayerCharacter = Cast<ADLPlayerCharacter>(GetOwner());
 	if (DLPlayerCharacter == nullptr)
 		return;
-	
+
 	check(ItemTemplateID > 0);
-	
+
+	// TEMP
+	UDLAbilitySystemComponent* ASC = Cast<UDLAbilitySystemComponent>(DLPlayerCharacter->GetAbilitySystemComponent());
+
 	const UDLItemTemplate& ItemTemplate = UDLItemData::Get().FindItemTemplateByID(ItemTemplateID);
 	const UDLItemFragment_Equippable_Attachment* AttachmentFragment = ItemTemplate.FindFragmentByClass<UDLItemFragment_Equippable_Attachment>();
 	if (AttachmentFragment == nullptr)
@@ -112,6 +119,9 @@ void ADLEquipmentBase::ProcessEquip_Implementation(UDLItemInstance* ItemInstance
 
 void ADLEquipmentBase::PlayEquipMontage()
 {
+	UAnimMontage* EquipMontage = UDLAssetManager::GetAssetByPath<UAnimMontage>(GetEquipMontage());
+	if (!EquipMontage) return;
+
 	ADLPlayerCharacter* DLPlayerCharacter = Cast<ADLPlayerCharacter>(GetOwner());
 	if (DLPlayerCharacter == nullptr)
 		return;
@@ -120,7 +130,6 @@ void ADLEquipmentBase::PlayEquipMontage()
 	if (CharacterMeshComponent == nullptr)
 		return;
 	
-	UAnimMontage* EquipMontage = UDLAssetManager::GetAssetByPath<UAnimMontage>(GetEquipMontage());
 	if (UAnimInstance* AnimInstance = CharacterMeshComponent->GetAnimInstance())
 	{
 		if (AnimInstance->GetCurrentActiveMontage() != EquipMontage)

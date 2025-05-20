@@ -170,6 +170,12 @@ void UDLEquipmentManagerComponent::SetEquipment(EEquipmentSlotType EquipmentSlot
 	}
 }
 
+void UDLEquipmentManagerComponent::AddUnarmedEquipments(TSubclassOf<UDLItemTemplate> LeftHandClass, TSubclassOf<UDLItemTemplate> RightHandClass)
+{
+	SetEquipment(EEquipmentSlotType::Unarmed_LeftHand, LeftHandClass, 1);
+	SetEquipment(EEquipmentSlotType::Unarmed_RightHand, RightHandClass, 1);
+}
+
 UDLItemInstance* UDLEquipmentManagerComponent::RemoveEquipment(EEquipmentSlotType EquipmentSlotType, int32 ItemCount)
 {
 	FDLEquipmentEntry& Entry = EquipmentList.Entries[(int32)EquipmentSlotType];

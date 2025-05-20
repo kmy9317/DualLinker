@@ -54,21 +54,21 @@ void UDLLoadingScreenManager::Initialize(FSubsystemCollectionBase& Collection)
     Super::Initialize(Collection);
 
     // 맵 로딩 전/후 델리게이트 바인딩
-    FCoreUObjectDelegates::PreLoadMapWithContext.AddUObject(this, &UDLLoadingScreenManager::HandlePreLoadMap);
-    FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UDLLoadingScreenManager::HandlePostLoadMap);
+    //FCoreUObjectDelegates::PreLoadMapWithContext.AddUObject(this, &UDLLoadingScreenManager::HandlePreLoadMap);
+    //FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UDLLoadingScreenManager::HandlePostLoadMap);
 }
 
 void UDLLoadingScreenManager::Deinitialize()
 {
     Super::Deinitialize();
 
-    FCoreUObjectDelegates::PreLoadMapWithContext.RemoveAll(this);
-    FCoreUObjectDelegates::PostLoadMapWithWorld.RemoveAll(this);
+    //FCoreUObjectDelegates::PreLoadMapWithContext.RemoveAll(this);
+    //FCoreUObjectDelegates::PostLoadMapWithWorld.RemoveAll(this);
 }
 
 void UDLLoadingScreenManager::Tick(float DeltaTime)
 {
-    UpdateLoadingScreenVisibility();
+    //UpdateLoadingScreenVisibility();
 }
 
 bool UDLLoadingScreenManager::IsTickable() const

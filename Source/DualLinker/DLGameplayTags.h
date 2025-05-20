@@ -26,18 +26,28 @@ struct FDLGameplayTags
 	FGameplayTag Character_Edel;
 
 	/**
-	* Enhanced Input Tags
+	* Input Tags
 	*/
 	FGameplayTag InputTag_Move;
 	FGameplayTag InputTag_Look_Mouse;
+	FGameplayTag InputTag_ChangeEquip_Primary;
+	FGameplayTag InputTag_ChangeEquip_Secondary;
 
-	// TEMP
-	FGameplayTag InputTag_Unequip;
+	/**
+	*  Ability Tags
+	*/
+	FGameplayTag Ability_ChangeEquip;
+
+	/**
+	*  Gameplay Event Tags
+	*/
+	FGameplayTag GameplayEvent_ChangeEquip;
 
 	/**
 	* Player Status Tags
 	*/
 	FGameplayTag Player_Status_Equipped;
+	FGameplayTag Player_Status_ChangeEquip;
 
 private:
 	// static 변수 초기화는 .cpp에 해주는 것을 잊지 말기!
