@@ -3,6 +3,7 @@
 
 #include "DLPlayerController.h"
 #include "EnhancedInputSubsystems.h"
+#include "DualLinker/Character/DLPawnData.h"
 #include "DualLinker/Input/DLInputComponent.h"
 #include "DualLinker/Input/DLInputConfig.h"
 #include "DualLinker/DLGameplayTags.h"
@@ -20,6 +21,36 @@
 ADLPlayerController::ADLPlayerController()
 {
     PlayerCameraManagerClass = ADLPlayerCameraManager::StaticClass();
+}
+
+void ADLPlayerController::ReceivePawnData(const TArray<TSoftObjectPtr<UDLPawnData>> InPawnDataList)
+{
+    if (!(InPawnDataList.Num() > 0)) return;
+
+    if (ADLPlayerState* PS = GetPlayerState<ADLPlayerState>())
+    { 
+        PS->PawnData = InPawnDataList[(int32)PS->CurrentCharacterType].Get();
+        if (PS->PawnData)
+        {
+            // 1) 입력 바인딩
+            if (PS->PawnData->InputConfig)
+            {
+                BindInputActions(PS->PawnData->InputConfig);
+            }
+
+            // 2) 카메라 모드 설정
+            if (PS->PawnData->DefaultCameraMode)
+            {
+                SetupDefaultCameraMode(PS->PawnData->DefaultCameraMode);
+            }
+
+            if (PS->PawnData->AbilitySets.Num() > 0)
+            {
+                // 3) AbilitySet 부여 (PlayerState → ASC)
+                PS->ApplyAbilitySets(PS->PawnData->AbilitySets);
+            }
+        }
+    }
 }
 
 void ADLPlayerController::BeginPlay()

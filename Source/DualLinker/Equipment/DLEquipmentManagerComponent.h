@@ -9,8 +9,6 @@
 
 #include "DLEquipmentManagerComponent.generated.h"
 
-class UDLEquipmentDefinition;
-class UDLEquipmentInstance;
 class UDLAbilitySystemComponent;
 class UDLEquipmentManagerComponent;
 class UDLEquipManagerComponent;

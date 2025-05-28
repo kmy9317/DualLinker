@@ -46,7 +46,6 @@ struct FDLGameplayTags
 	/**
 	* Player Status Tags
 	*/
-	FGameplayTag Player_Status_Equipped;
 	FGameplayTag Player_Status_ChangeEquip;
 
 private:

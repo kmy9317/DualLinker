@@ -9,8 +9,6 @@
 #include "DualLinker/Data/DLItemData.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#include "DualLinker/DLGameplayTags.h"
-
 ADLEquipmentBase::ADLEquipmentBase()
 {
 	PrimaryActorTick.bCanEverTick = false;

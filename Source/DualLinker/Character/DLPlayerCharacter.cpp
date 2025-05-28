@@ -20,6 +20,8 @@ ADLPlayerCharacter::ADLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	EquipmentManagerComponent = CreateDefaultSubobject<UDLEquipmentManagerComponent>(TEXT("EquipmentManagerComponent"));
 	EquipManagerComponent = CreateDefaultSubobject<UDLEquipManagerComponent>(TEXT("EquipManagerComponent"));
 
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;

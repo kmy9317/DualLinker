@@ -10,6 +10,7 @@
 class UInputMappingContext;
 class UDLInputConfig;
 class UDLCameraMode;
+class UDLPawnData;
 
 struct FInputActionValue;
 
@@ -22,6 +23,8 @@ class DUALLINKER_API ADLPlayerController : public APlayerController, public IDLC
     GENERATED_BODY()
 public:
     ADLPlayerController();
+
+    void ReceivePawnData(const TArray<TSoftObjectPtr<UDLPawnData>> InPawnDataList);
 
     void BindInputActions(UDLInputConfig* InInputConfig);
 

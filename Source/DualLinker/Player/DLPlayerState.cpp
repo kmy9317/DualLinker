@@ -5,6 +5,7 @@
 #include "DualLinker/System/DLExperienceSubsystem.h"
 #include "DualLinker/GameModes/DLGameModeBase.h"
 #include "DualLinker/AbilitySystem/DLAbilitySystemComponent.h"
+#include "DualLinker/AbilitySystem/DLAbilitySet.h"
 
 ADLPlayerState::ADLPlayerState()
 {
@@ -35,5 +36,20 @@ void ADLPlayerState::SetPawnData(const UDLPawnData* InPawnData)
 	if (InPawnData)
 	{
 		PawnData = InPawnData;
+	}
+}
+
+void ADLPlayerState::ApplyAbilitySets(const TArray<UDLAbilitySet*>& AbilitySets)
+{
+	if (UDLAbilitySystemComponent* ASC = GetDLAbilitySystemComponent())
+	{
+		for (UDLAbilitySet* Set : AbilitySets)
+		{
+			if (IsValid(Set))
+			{
+				// OutHandles가 필요하면 두 번째 인자로 전달
+				Set->GiveToAbilitySystem(ASC, /*OutGrantedHandles*/ nullptr);
+			}
+		}
 	}
 }

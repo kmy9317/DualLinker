@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "DualLinker/DLDefine.h"
+
 #include "DLPlayerState.generated.h"
 
 class UDLExperienceDefinition;
 class UDLPawnData;
 class UDLAbilitySystemComponent;
+class UDLAbilitySet;
 
 /**
  * 
@@ -25,7 +28,11 @@ public:
 	const T* GetPawnData() const { return Cast<T>(PawnData); }
 	void OnExperienceLoaded(const UDLExperienceDefinition* CurrentExperience);
 	void SetPawnData(const UDLPawnData* InPawnData);
+	void ApplyAbilitySets(const TArray<UDLAbilitySet*>& AbilitySets);
 	UDLAbilitySystemComponent* GetDLAbilitySystemComponent() const { return AbilitySystemComponent; }
+
+	// TEMP -> 디폴트를 count로 변경 후 다른 위치에서 값 초기화 하도록 함
+	ECharacterType CurrentCharacterType = ECharacterType::Edel;
 
 	UPROPERTY()
 	TObjectPtr<const UDLPawnData> PawnData;

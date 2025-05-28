@@ -8,8 +8,6 @@
 #include "DualLinker/Item/DLItemInstance.h"
 #include "DualLinker/Player/DLPlayerController.h"
 #include "DualLinker/Character/DLPlayerCharacter.h"
-#include "DLEquipmentDefinition.h"
-#include "DLEquipmentInstance.h"
 #include "DualLinker/AbilitySystem/DLAbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 

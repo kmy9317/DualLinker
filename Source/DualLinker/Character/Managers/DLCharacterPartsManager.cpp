@@ -39,6 +39,7 @@ USkeletalMeshComponent* UDLCharacterPartsManager::GetOrCreateMeshComponent(FName
 
 	// 새 서브메쉬 컴포넌트 생성
 	auto* NewComp = NewObject<USkeletalMeshComponent>(GetOwner(), USkeletalMeshComponent::StaticClass(), PartID);
+    NewComp->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPose;
 	NewComp->AttachToComponent(Base, FAttachmentTransformRules::KeepRelativeTransform);
 	NewComp->SetRelativeLocationAndRotation(FVector::Zero(), FRotator::ZeroRotator.Quaternion());
 	NewComp->SetLeaderPoseComponent(Base);

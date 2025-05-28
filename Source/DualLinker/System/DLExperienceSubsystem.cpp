@@ -33,7 +33,7 @@ void UDLExperienceSubsystem::LoadExperience(TSoftObjectPtr<UDLExperienceDefiniti
         TSubclassOf<UDLExperienceDefinition> AssetClass = Cast<UClass>(NewExperiencePath.TryLoad());
 
         CurrentExperience = AssetClass->GetDefaultObject<UDLExperienceDefinition>();
-        //check(CurrentExperience == nullptr);
+        //check(CurrentExperience);
 
         PreviouslyLoadedAssets.Add(NewExperiencePath);
         TArray<FSoftObjectPath> AssetsToLoad;

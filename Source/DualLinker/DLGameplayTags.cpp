@@ -61,11 +61,6 @@ void FDLGameplayTags::InitializeNativeGameplayTags()
 	/**
 	* Player Status Tags
 	*/
-	GameplayTags.Player_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Player.Status.Equipped"),
-		FString("")
-	);
-
 	GameplayTags.Player_Status_ChangeEquip = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("GameplayEvent.ChangeEquip"),
 		FString("")
