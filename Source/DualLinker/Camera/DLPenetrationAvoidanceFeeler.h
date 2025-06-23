@@ -12,23 +12,23 @@ struct FDLPenetrationAvoidanceFeeler
 {
 	GENERATED_BODY()
 
-	/** feeler¸¶´Ù ¼­·Î ´Ù¸¥ ¹æÇâ(¿¹, ÁÂÃø, ¿ìÃø, À§, ¾Æ·¡ µî)À¸·Î Ray¸¦ ½îµµ·Ï ÇÔ */
+	/** feelerë§ˆë‹¤ ì„œë¡œ ë‹¤ë¥¸ ë°©í–¥(ì˜ˆ, ì¢Œì¸¡, ìš°ì¸¡, ìœ„, ì•„ëž˜ ë“±)ìœ¼ë¡œ Rayë¥¼ ì˜ë„ë¡ í•¨ */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	FRotator AdjustmentRot;
 
-	/** ÀÌ feelerÀÇ °á°ú°¡ ¿ùµå(Áï, static geometry)¿¡ Ãæµ¹ÇßÀ» ¶§ Â÷´Ü °á°ú¿¡ ¾ó¸¶³ª Å« ¿µÇâÀ» ¹ÌÄ¥Áö¸¦ °áÁ¤ÇÏ´Â °¡ÁßÄ¡ */
+	/** ì´ feelerì˜ ê²°ê³¼ê°€ ì›”ë“œ(ì¦‰, static geometry)ì— ì¶©ëŒí–ˆì„ ë•Œ ì°¨ë‹¨ ê²°ê³¼ì— ì–¼ë§ˆë‚˜ í° ì˜í–¥ì„ ë¯¸ì¹ ì§€ë¥¼ ê²°ì •í•˜ëŠ” ê°€ì¤‘ì¹˜ */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	float WorldWeight;
 
-	/** ÀÌ feeler°¡ Pawn(¿¹: ´Ù¸¥ Ä³¸¯ÅÍ³ª ÇÃ·¹ÀÌ¾î)ÀÇ Ãæµ¹°ú °ü·ÃµÈ °æ¿ì¿¡ Àû¿ëµÇ´Â °¡ÁßÄ¡, 0À¸·Î ÇÏ¸é Pawn°úÀÇ Ãæµ¹ º¸Á¤X */
+	/** ì´ feelerê°€ Pawn(ì˜ˆ: ë‹¤ë¥¸ ìºë¦­í„°ë‚˜ í”Œë ˆì´ì–´)ì˜ ì¶©ëŒê³¼ ê´€ë ¨ëœ ê²½ìš°ì— ì ìš©ë˜ëŠ” ê°€ì¤‘ì¹˜, 0ìœ¼ë¡œ í•˜ë©´ Pawnê³¼ì˜ ì¶©ëŒ ë³´ì •X */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	float PawnWeight;
 
-	/** Æ®·¹ÀÌ½ºÀÇ ¹Î°¨µµ¿Í Ãæµ¹ ¿µ¿ªÀÇ Å©±â¸¦ °áÁ¤ */
+	/** íŠ¸ë ˆì´ìŠ¤ì˜ ë¯¼ê°ë„ì™€ ì¶©ëŒ ì˜ì—­ì˜ í¬ê¸°ë¥¼ ê²°ì • */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	float Extent;
 
-	/** feeler¸¦ ¾ðÁ¦ ´Ù½Ã Æ®·¹ÀÌ½ºÇÒÁö(¸Å ÇÁ·¹ÀÓ¸¶´Ù °Ë»çÇÏÁö ¾Ê°í ÀÏÁ¤ÇÑ °£°ÝÀ¸·Î °Ë»ç) Á¦¾î */
+	/** feelerë¥¼ ì–¸ì œ ë‹¤ì‹œ íŠ¸ë ˆì´ìŠ¤í• ì§€(ë§¤ í”„ë ˆìž„ë§ˆë‹¤ ê²€ì‚¬í•˜ì§€ ì•Šê³  ì¼ì •í•œ ê°„ê²©ìœ¼ë¡œ ê²€ì‚¬) ì œì–´ */
 	UPROPERTY(EditAnywhere, Category = PenetrationAvoidanceFeeler)
 	int32 TraceInterval;
 

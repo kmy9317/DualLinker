@@ -19,7 +19,7 @@ void UDLInputMappingSubsystem::Initialize(FSubsystemCollectionBase& Collection)
                 {
                     UE_LOG(LogTemp, Log, TEXT("Default Input Mapping Loaded: %s"), *LoadedMapping->GetName());
 
-                    // **·Îµå ¿Ï·á ÈÄ µ¨¸®°ÔÀÌÆ® ºê·ÎµåÄ³½ºÆ®**
+                    // **ë¡œë“œ ì™„ë£Œ í›„ ë¸ë¦¬ê²Œì´íŠ¸ ë¸Œë¡œë“œìºìŠ¤íŠ¸**
                     bDefaultMappingLoaded = true;
                     OnDefaultInputMappingLoaded.Broadcast(LoadedMapping);
                 }

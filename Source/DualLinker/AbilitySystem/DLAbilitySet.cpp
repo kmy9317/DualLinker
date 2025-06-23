@@ -22,7 +22,7 @@ void FDLAbilitySet_GrantedHandles::TakeFromAbilitySystem(UDLAbilitySystemCompone
 {
 	check(DLASC);
 
-	// ºÎ¿©µÈ Ability Clear
+	// ë¶€ì—¬ëœ Ability Clear
 	for (const FGameplayAbilitySpecHandle& Handle : AbilitySpecHandles)
 	{
 		if (Handle.IsValid())
@@ -39,7 +39,7 @@ void UDLAbilitySet::GiveToAbilitySystem(UDLAbilitySystemComponent* DLASC, FDLAbi
 {
 	check(DLASC);
 
-	// AbilitySetÀÇ Granted GA¸¦ ºÎ¿©(InputTag¿Í Level ¸ÅÇÎ)
+	// AbilitySetì˜ Granted GAë¥¼ ë¶€ì—¬(InputTagì™€ Level ë§¤í•‘)
 	for (int32 AbilityIndex = 0; AbilityIndex < GrantedGameplayAbilities.Num(); ++AbilityIndex)
 	{
 		const FDLAbilitySet_GameplayAbility& AbilityToGrant = GrantedGameplayAbilities[AbilityIndex];

@@ -7,10 +7,10 @@
 
 FString UTravelManager_TravelRequest::GetMapName() const
 {
-	// AssetManager, MapID·Î FAssetData¸¦ ¹ÝÈ¯ÇÏ°í. ÀÌ¸¦ ÅëÇØ PackageNameÀ¸·Î Map °æ·Î¸¦ ¹ÝÈ¯ÇÑ´Ù. 
+	// AssetManager, MapIDë¡œ FAssetDataë¥¼ ë°˜í™˜í•˜ê³ . ì´ë¥¼ í†µí•´ PackageNameìœ¼ë¡œ Map ê²½ë¡œë¥¼ ë°˜í™˜í•œë‹¤. 
 	FAssetData MapAssetData;
 
-	// ¿¡¼ÂÀÇ Á¤º¸ µ¥ÀÌÅÍ¸¸ °¡Á®¿È (·Îµùx)
+	// ì—ì…‹ì˜ ì •ë³´ ë°ì´í„°ë§Œ ê°€ì ¸ì˜´ (ë¡œë”©x)
 	if (UAssetManager::Get().GetPrimaryAssetData(MapID, MapAssetData))
 	{
 		return MapAssetData.PackageName.ToString();
@@ -30,8 +30,8 @@ FString UTravelManager_TravelRequest::ConstructTravelURL() const
 		}
 
 		/**
-		* ?¸¦ separate·Î º¹¼ö°³ÀÇ ExtraArgs¸¦ Ãß°¡ÇÔ:
-		* - Key °ª À¯¹«¿¡ µû¶ó, =(assignment)¸¦ ÅëÇØ ¾Ë¸ÂÀº cmdArgs¸¦ »ý¼º
+		* ?ë¥¼ separateë¡œ ë³µìˆ˜ê°œì˜ ExtraArgsë¥¼ ì¶”ê°€í•¨:
+		* - Key ê°’ ìœ ë¬´ì— ë”°ë¼, =(assignment)ë¥¼ í†µí•´ ì•Œë§žì€ cmdArgsë¥¼ ìƒì„±
 		*/
 		if (ExtraArg.Value.IsEmpty())
 		{
@@ -43,7 +43,7 @@ FString UTravelManager_TravelRequest::ConstructTravelURL() const
 		}
 	}
 
-	// Map °æ·Î ¾Õ¿¡ Ãß°¡ÇÏ¿©, ÃÖÁ¾ TravelURL »ý¼º
+	// Map ê²½ë¡œ ì•žì— ì¶”ê°€í•˜ì—¬, ìµœì¢… TravelURL ìƒì„±
 	return FString::Printf(TEXT("%s%s"), *GetMapName(), *CombinedExtraArgs);
 }
 
@@ -55,6 +55,6 @@ void UTravelManagerSubsystem::RequestTravel(APlayerController* InPlayer, UTravel
 		return;
 	}
 
-	// TravelRequest¿¡¼­ MapID¿Í ExtraArgs¸¦ ÅëÇØ URLÀ» »ý¼ºÇÏ¿©, MapLoad¸¦ ½ÃÀÛÇÑ´Ù
+	// TravelRequestì—ì„œ MapIDì™€ ExtraArgsë¥¼ í†µí•´ URLì„ ìƒì„±í•˜ì—¬, MapLoadë¥¼ ì‹œìž‘í•œë‹¤
 	GetWorld()->ServerTravel(Request->ConstructTravelURL());
 }

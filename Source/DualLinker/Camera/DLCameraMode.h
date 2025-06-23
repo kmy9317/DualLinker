@@ -24,14 +24,14 @@ struct FDLCameraModeView
 };
 
 /**
- * [0,1]À» BlendFunction¿¡ ¸Â°Ô Àç¸ÅÇÎÀ» À§ÇÑ Å¸ÀÔ
+ * [0,1]ì„ BlendFunctionì— ë§ê²Œ ì¬ë§¤í•‘ì„ ìœ„í•œ íƒ€ì…
  */
 UENUM(BlueprintType)
 enum class EDLCameraModeBlendFunction : uint8
 {
 	Linear,
 	/**
-	 * EaseIn/OutÀº exponent °ª¿¡ ÀÇÇØ Á¶ÀıµÈ´Ù:
+	 * EaseIn/Outì€ exponent ê°’ì— ì˜í•´ ì¡°ì ˆëœë‹¤:
 	 */
 	EaseIn,
 	EaseOut,
@@ -61,35 +61,35 @@ public:
 	FVector GetPivotLocation() const;
 	FRotator GetPivotRotation() const;
 
-	/** CameraMode¿¡ ÀÇÇØ »ı¼ºµÈ CameraModeView */
+	/** CameraModeì— ì˜í•´ ìƒì„±ëœ CameraModeView */
 	FDLCameraModeView View;
 
-	/** Camera ModeÀÇ FOV */
+	/** Camera Modeì˜ FOV */
 	UPROPERTY(EditDefaultsOnly, Category = "View", Meta = (UIMin = "5.0", UIMax = "170", ClampMin = "5.0", Clampmax = "170.0"))
 	float FieldOfView;
 
-	/** View¿¡ ´ëÇÑ Pitch [Min, Max] */
+	/** Viewì— ëŒ€í•œ Pitch [Min, Max] */
 	UPROPERTY(EditDefaultsOnly, Category = "View", Meta = (UIMin = "-89.9", UIMax = "89.9", ClampMin = "-89.9", Clampmax = "89.9"))
 	float ViewPitchMin;
 
 	UPROPERTY(EditDefaultsOnly, Category = "View", Meta = (UIMin = "-89.9", UIMax = "89.9", ClampMin = "-89.9", Clampmax = "89.9"))
 	float ViewPitchMax;
 
-	/** ÀüÈ¯ÀÌ ¿Ï·áµÇ´Âµ¥ °É¸®´Â ½Ã°£À» ÀÇ¹Ì */
+	/** ì „í™˜ì´ ì™„ë£Œë˜ëŠ”ë° ê±¸ë¦¬ëŠ” ì‹œê°„ì„ ì˜ë¯¸ */
 	UPROPERTY(EditDefaultsOnly, Category = "Blending")
 	float BlendTime;
 
-	/** ¼±ÇüÀûÀÎ Blend °ª [0, 1] */
+	/** ì„ í˜•ì ì¸ Blend ê°’ [0, 1] */
 	float BlendAlpha;
 
 	/**
-	 * Ä«¸Ş¶ó °£ÀÇ ÀüÈ¯ ºñÀ²°ª
-	 * ¾Õ¼­ BlendAlphaÀÇ °ªÀ» ¸ÅÇÎÇÏ¿© ÃÖÁ¾ BlendWeight¸¦ °è»ê
+	 * ì¹´ë©”ë¼ ê°„ì˜ ì „í™˜ ë¹„ìœ¨ê°’
+	 * ì•ì„œ BlendAlphaì˜ ê°’ì„ ë§¤í•‘í•˜ì—¬ ìµœì¢… BlendWeightë¥¼ ê³„ì‚°
 	 */
 	float BlendWeight;
 
 	/**
-	* EaseIn/Out¿¡ »ç¿ëÇÑ Exponent
+	* EaseIn/Outì— ì‚¬ìš©í•œ Exponent
 	 */
 	UPROPERTY(EditDefaultsOnly, Category = "Blending")
 	float BlendExponent;
@@ -103,7 +103,7 @@ public:
 	uint32 bResetInterpolation : 1;
 };
 
-/** Camera BlendingÀ» ´ã´çÇÏ´Â °´Ã¼ */
+/** Camera Blendingì„ ë‹´ë‹¹í•˜ëŠ” ê°ì²´ */
 UCLASS()
 class UDLCameraModeStack : public UObject
 {
@@ -117,11 +117,11 @@ public:
 	void UpdateStack(float DeltaTime);
 	void BlendStack(FDLCameraModeView& OutCameraModeView) const;
 
-	/** »ı¼ºµÈ CameraMode¸¦ °ü¸®, ÇØ´ç Ä«¸Ş¶ó ¸ğµå Å¬·¡½º Å¸ÀÔÀÇ Á¸Àç À¯¹« ÆÄ¾Ç¿ë */
+	/** ìƒì„±ëœ CameraModeë¥¼ ê´€ë¦¬, í•´ë‹¹ ì¹´ë©”ë¼ ëª¨ë“œ í´ë˜ìŠ¤ íƒ€ì…ì˜ ì¡´ì¬ ìœ ë¬´ íŒŒì•…ìš© */
 	UPROPERTY()
 	TArray<TObjectPtr<UDLCameraMode>> CameraModeInstances;
 
-	/** Camera Matrix Blend ¾÷µ¥ÀÌÆ® ÁøÇà Å¥ */
+	/** Camera Matrix Blend ì—…ë°ì´íŠ¸ ì§„í–‰ í */
 	UPROPERTY()
 	TArray<TObjectPtr<UDLCameraMode>> CameraModeStack;
 };

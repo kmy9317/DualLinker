@@ -17,14 +17,14 @@ class DUALLINKER_API UDLUserFacingExperience : public UPrimaryDataAsset
 	GENERATED_BODY()
 public:
 	/**
-	* Map ·Îµù ¹× Experience ÀüÈ¯À» À§ÇØ, MapID¿Í ExperienceID¸¦ È°¿ëÇÏ¿©, TravelRequest »ý¼º
-	* const ÇÔ¼öÀÇ °æ¿ì BlueprintPureÀÇ µðÆúÆ®°¡ true
+	* Map ï¿½Îµï¿½ ï¿½ï¿½ Experience ï¿½ï¿½È¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, MapIDï¿½ï¿½ ExperienceIDï¿½ï¿½ È°ï¿½ï¿½ï¿½Ï¿ï¿½, TravelRequest ï¿½ï¿½ï¿½ï¿½
+	* const ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ BlueprintPureï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ true
 	*/
 	UFUNCTION(BlueprintCallable, BlueprintPure = false)
 	UTravelManager_TravelRequest* CreateTravelRequest() const;
 
 	/** the specific map to load */
-	// ½±°Ô ¸»ÇØ ºÒ·¯¿Ã °ÔÀÓÀÇ ¸Ê¿¡ ´ëÇÑ id¸¦ °¡Áö°í ÀÖ´Ù
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Experience, meta = (AllowedTypes = "Map"))
 	FPrimaryAssetId MapID;
 

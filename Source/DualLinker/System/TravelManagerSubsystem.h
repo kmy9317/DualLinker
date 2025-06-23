@@ -11,17 +11,17 @@ class DUALLINKER_API UTravelManager_TravelRequest : public UObject
 {
 	GENERATED_BODY()
 public:
-	/** MapID -> TEXT º¯È¯ */
+	/** MapID -> TEXT ë³€í™˜ */
 	FString GetMapName() const;
 
-	/** ServerTravel¿¡ Àü´ŞÇÒ ÃÖÁ¾ URLÀ» »ı¼ºÇÑ´Ù */
+	/** ServerTravelì— ì „ë‹¬í•  ìµœì¢… URLì„ ìƒì„±í•œë‹¤ */
 	FString ConstructTravelURL() const;
 
-	/** ÁØºñÇÒ MapID (¸Ê °æ·Î) */
+	/** ì¤€ë¹„í•  MapID (ë§µ ê²½ë¡œ) */
 	UPROPERTY(BlueprintReadWrite, Category = Session)
 	FPrimaryAssetId MapID;
 
-	/** Àü´ŞÇÒ CmdArgs (Experience ÀÌ¸§À» Àü´ŞÇÔ) */
+	/** ì „ë‹¬í•  CmdArgs (Experience ì´ë¦„ì„ ì „ë‹¬í•¨) */
 	UPROPERTY(BlueprintReadWrite, Category = Session)
 	TMap<FString, FString> ExtraArgs;
 };

@@ -27,14 +27,14 @@ void UDLAnimInstance::NativeInitializeAnimation()
 
 void UDLAnimInstance::InitializeWithAbilitySystem(UAbilitySystemComponent* ASC)
 {
-	// ASCÀÇ ³»ºÎ¸¦ °ü¸®ÇÏ´Â GameplayTag¿Í AnimInstanceÀÇ ¸â¹ö Property¿Í Delegate¸¦ ¿¬°áÇÏ¿© °ª º¯È­¿¡ ´ëÇÑ ¹Ý¿µÀ» ÁøÇàÇÑ´Ù
+	// ASCì˜ ë‚´ë¶€ë¥¼ ê´€ë¦¬í•˜ëŠ” GameplayTagì™€ AnimInstanceì˜ ë©¤ë²„ Propertyì™€ Delegateë¥¼ ì—°ê²°í•˜ì—¬ ê°’ ë³€í™”ì— ëŒ€í•œ ë°˜ì˜ì„ ì§„í–‰í•œë‹¤
 	GameplayTagPropertyMap.Initialize(this, ASC);
 }
 
 void UDLAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 {
-	// ¸Å ÇÁ·¹ÀÓ ¸Å¿ì Âª°Ô ³¡³ª´Â °è»ê(¼Óµµ, °¡¼Óµµ, ÅÂ±× ¹ÙÀÎµù)
-	// Worker thread ¿¡¼­ ½ÇÇàµÇ¾îµµ ¾ÈÀüÇÑ ·ÎÁ÷
+	// ë§¤ í”„ë ˆìž„ ë§¤ìš° ì§§ê²Œ ëë‚˜ëŠ” ê³„ì‚°(ì†ë„, ê°€ì†ë„, íƒœê·¸ ë°”ì¸ë”©)
+	// Worker thread ì—ì„œ ì‹¤í–‰ë˜ì–´ë„ ì•ˆì „í•œ ë¡œì§
 	if (!OwningCharacter || !OwningMovementComponent) return;
 
 	GroundSpeed = OwningCharacter->GetVelocity().Size2D();

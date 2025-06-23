@@ -10,7 +10,7 @@
 
 class UDLCameraModeStack;
 
-/** ÅÛÇÃ¸´ Àü¹æ ¼±¾ğ */
+/** í…œí”Œë¦¿ ì „ë°© ì„ ì–¸ */
 template <class TClass> class TSubclassOf;
 
 DECLARE_DELEGATE_RetVal(TSubclassOf<UDLCameraMode>, FDLCameraModeDelegate);
@@ -35,10 +35,10 @@ public:
 	virtual void GetCameraView(float DeltaTime, FMinimalViewInfo& DesiredView) final;
 	/**-End CameraComponent interface */
 
-	 /** Ä«¸Ş¶óÀÇ blending ±â´ÉÀ» Áö¿øÇÏ´Â stack */
+	 /** ì¹´ë©”ë¼ì˜ blending ê¸°ëŠ¥ì„ ì§€ì›í•˜ëŠ” stack */
 	UPROPERTY()
 	TObjectPtr<UDLCameraModeStack> CameraModeStack;
 
-	/** ÇöÀç CameraMode¸¦ °¡Á®¿À´Â Delegate */
+	/** í˜„ì¬ CameraModeë¥¼ ê°€ì ¸ì˜¤ëŠ” Delegate */
 	FDLCameraModeDelegate DetermineCameraModeDelegate;
 };

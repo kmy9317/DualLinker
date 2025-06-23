@@ -5,8 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "DualLinker/Camera/DLCameraAssistInterface.h"
+#include "GameplayTagContainer.h"
+
 #include "DLPlayerController.generated.h"
 
+class ADLPlayerState;
+class UDLAbilitySystemComponent;
 class UInputMappingContext;
 class UDLInputConfig;
 class UDLCameraMode;
@@ -24,6 +28,12 @@ class DUALLINKER_API ADLPlayerController : public APlayerController, public IDLC
 public:
     ADLPlayerController();
 
+    UFUNCTION(BlueprintCallable, Category = "DL|PlayerController")
+    ADLPlayerState* GetDLPlayerState() const;
+    
+    UFUNCTION(BlueprintCallable, Category = "DL|PlayerController")
+    UDLAbilitySystemComponent* GetDLAbilitySystemComponent() const;
+    
     void ReceivePawnData(const TArray<TSoftObjectPtr<UDLPawnData>> InPawnDataList);
 
     void BindInputActions(UDLInputConfig* InInputConfig);
@@ -36,7 +46,7 @@ public:
     virtual void OnCameraPenetratingTarget() override;
     //~End of IDLCameraAssistInterface interface
 
-    // Enhanced Input �ʱ�ȭ
+    // Enhanced Input 초기화
     void SetupEnhancedInput();
     void SetupDefaultCameraMode(const TSubclassOf<UDLCameraMode> CameraMode);
 
@@ -45,8 +55,13 @@ protected:
     virtual void BeginPlay() override;
     virtual void SetupInputComponent() override;
     virtual void OnPossess(APawn* NewPawn) override;
+    virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
     //~End of APlayerController interface
 
+    void Input_AbilityInputTagStarted(FGameplayTag InputTag);
+    void Input_AbilityInputTagPressed(FGameplayTag InputTag);
+    void Input_AbilityInputTagReleased(FGameplayTag InputTag);
+    
 protected:
     bool bHideViewTargetPawnNextFrame = false;
 

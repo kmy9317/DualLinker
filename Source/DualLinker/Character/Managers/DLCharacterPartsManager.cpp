@@ -19,7 +19,7 @@ void UDLCharacterPartsManager::BeginPlay()
 
 void UDLCharacterPartsManager::InitializeParts()
 {
-	// TODO: ±âº» HeroÄ³¸¯ÅÍ ¿Ü ÆÄÃ÷ ÃÊ±âÈ­ ´ã´ç
+	// TODO: ê¸°ë³¸ Heroìºë¦­í„° ì™¸ íŒŒì¸  ì´ˆê¸°í™” ë‹´ë‹¹
 }
 
 USkeletalMeshComponent* UDLCharacterPartsManager::GetBaseMesh() const
@@ -37,7 +37,7 @@ USkeletalMeshComponent* UDLCharacterPartsManager::GetOrCreateMeshComponent(FName
 	USkeletalMeshComponent* Base = GetBaseMesh();
 	if (!Base) return nullptr;
 
-	// »õ ¼­ºê¸Ş½¬ ÄÄÆ÷³ÍÆ® »ı¼º
+	// ìƒˆ ì„œë¸Œë©”ì‰¬ ì»´í¬ë„ŒíŠ¸ ìƒì„±
 	auto* NewComp = NewObject<USkeletalMeshComponent>(GetOwner(), USkeletalMeshComponent::StaticClass(), PartID);
     NewComp->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPose;
 	NewComp->AttachToComponent(Base, FAttachmentTransformRules::KeepRelativeTransform);
@@ -66,7 +66,7 @@ void UDLCharacterPartsManager::ApplyMeshPart(const FDLCharacterMeshPart& MeshPar
         { MeshPart.DefaultMeshes, TEXT("")        }
     };
 
-    // 3) °øÅë ·ÎÁ÷ ÇÑ ¹ø¸¸ ÀÛ¼º
+    // 3) ê³µí†µ ë¡œì§ í•œ ë²ˆë§Œ ì‘ì„±
     for (const FMeshCategory& Cat : Categories)
     {
         const TArray<FDLCharacterMeshSlot>& Slots = Cat.Slots;
@@ -74,7 +74,7 @@ void UDLCharacterPartsManager::ApplyMeshPart(const FDLCharacterMeshPart& MeshPar
 
         for (int32 i = 0; i < Slots.Num(); ++i)
         {
-            // PartID ¿¹½Ã: "Edel_Hair_0", "Edel_0" µî
+            // PartID ì˜ˆì‹œ: "Edel_Hair_0", "Edel_0" ë“±
             FName PartID;
             if (Suf.IsEmpty())
             {
@@ -89,7 +89,7 @@ void UDLCharacterPartsManager::ApplyMeshPart(const FDLCharacterMeshPart& MeshPar
             {
                 const FDLCharacterMeshSlot& Slot = Slots[i];
 
-                // Mesh ¼¼ÆÃ
+                // Mesh ì„¸íŒ…
                 if (Slot.Mesh.IsValid())
                 {
                     Comp->SetSkeletalMesh(Slot.Mesh.Get());
@@ -99,7 +99,7 @@ void UDLCharacterPartsManager::ApplyMeshPart(const FDLCharacterMeshPart& MeshPar
                     Comp->SetSkeletalMesh(LoadedMesh);
                 }
 
-                // Material ¼¼ÆÃ
+                // Material ì„¸íŒ…
                 for (int32 MatIdx = 0; MatIdx < Slot.Materials.Num(); ++MatIdx)
                 {
                     if (Slot.Materials[MatIdx].IsValid())

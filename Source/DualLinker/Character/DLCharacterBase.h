@@ -46,12 +46,12 @@ public:
     virtual void PostInitializeComponents() override;
     //- End ActorInterface
 
-    // Ã¼·Â °ü¸® ÇÔ¼ö
+    // ì²´ë ¥ ê´€ë¦¬ í•¨ìˆ˜
     void TakeDamage(float Damage);
     void Heal(float HealAmount);
     ECharacterType GetCharacterType() const { return CharacterType; }
 
-    // ±âº» °ø°İ (ÃßÈÄ »ó¼Ó¹ŞÀº Å¬·¡½º¿¡¼­ ±¸Çö)
+    // ê¸°ë³¸ ê³µê²© (ì¶”í›„ ìƒì†ë°›ì€ í´ë˜ìŠ¤ì—ì„œ êµ¬í˜„)
     virtual void Attack();
 
 };

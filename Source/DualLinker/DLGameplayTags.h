@@ -32,23 +32,40 @@ struct FDLGameplayTags
 	FGameplayTag InputTag_Look_Mouse;
 	FGameplayTag InputTag_ChangeEquip_Primary;
 	FGameplayTag InputTag_ChangeEquip_Secondary;
+	FGameplayTag InputTag_Attack_MainHand;
 
 	/**
 	*  Ability Tags
 	*/
+	FGameplayTag Ability_ActivateFail_ActivationGroup;
+	
 	FGameplayTag Ability_ChangeEquip;
+	FGameplayTag Ability_Attack1;
+	FGameplayTag Ability_Attack2;
 
 	/**
 	*  Gameplay Event Tags
 	*/
+	FGameplayTag GameplayEvent_Montage_End;
 	FGameplayTag GameplayEvent_ChangeEquip;
+	FGameplayTag GameplayEvent_Trace;
 
+	/**
+	*  Status Tags
+	*/
+	FGameplayTag Status_Attack;
+	
 	/**
 	* Player Status Tags
 	*/
 	FGameplayTag Player_Status_ChangeEquip;
 
+	/**
+	 * Set By Caller
+	 */
+	FGameplayTag SetByCaller_BaseDamage;
+	
 private:
-	// static º¯¼ö ÃÊ±âÈ­´Â .cpp¿¡ ÇØÁÖ´Â °ÍÀ» ÀØÁö ¸»±â!
+	// static ë³€ìˆ˜ ì´ˆê¸°í™”ëŠ” .cppì— í•´ì£¼ëŠ” ê²ƒì„ ìŠì§€ ë§ê¸°!
 	static FDLGameplayTags GameplayTags;
 };

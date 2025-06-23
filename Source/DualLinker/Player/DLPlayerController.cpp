@@ -23,6 +23,17 @@ ADLPlayerController::ADLPlayerController()
     PlayerCameraManagerClass = ADLPlayerCameraManager::StaticClass();
 }
 
+ADLPlayerState* ADLPlayerController::GetDLPlayerState() const
+{
+    return CastChecked<ADLPlayerState>(PlayerState, ECastCheckedType::NullAllowed);
+}
+
+UDLAbilitySystemComponent* ADLPlayerController::GetDLAbilitySystemComponent() const
+{
+    const ADLPlayerState* PS = GetDLPlayerState();
+    return (PS ? PS->GetDLAbilitySystemComponent() : nullptr);
+}
+
 void ADLPlayerController::ReceivePawnData(const TArray<TSoftObjectPtr<UDLPawnData>> InPawnDataList)
 {
     if (!(InPawnDataList.Num() > 0)) return;
@@ -32,22 +43,27 @@ void ADLPlayerController::ReceivePawnData(const TArray<TSoftObjectPtr<UDLPawnDat
         PS->PawnData = InPawnDataList[(int32)PS->CurrentCharacterType].Get();
         if (PS->PawnData)
         {
-            // 1) ÀÔ·Â ¹ÙÀÎµù
+            // 1) ì…ë ¥ ë°”ì¸ë”©
             if (PS->PawnData->InputConfig)
             {
                 BindInputActions(PS->PawnData->InputConfig);
             }
 
-            // 2) Ä«¸Ş¶ó ¸ğµå ¼³Á¤
+            // 2) ì¹´ë©”ë¼ ëª¨ë“œ ì„¤ì •
             if (PS->PawnData->DefaultCameraMode)
             {
                 SetupDefaultCameraMode(PS->PawnData->DefaultCameraMode);
             }
-
+            
             if (PS->PawnData->AbilitySets.Num() > 0)
             {
-                // 3) AbilitySet ºÎ¿© (PlayerState ¡æ ASC)
+                // 3) AbilitySet ë¶€ì—¬ (PlayerState â†’ ASC)
                 PS->ApplyAbilitySets(PS->PawnData->AbilitySets);
+            }
+
+            if (UDLAbilitySystemComponent* ASC = GetDLAbilitySystemComponent())
+            {
+                ASC->TryActivateAbilitiesOnSpawn();
             }
         }
     }
@@ -63,14 +79,14 @@ void ADLPlayerController::SetupEnhancedInput()
 {
     if (UDLInputMappingSubsystem* InputMappingSubsystem = GetGameInstance()->GetSubsystem<UDLInputMappingSubsystem>())
     {
-        // ÀÌ¹Ì ·ÎµåµÈ °æ¿ì Áï½Ã Àû¿ë
+        // ì´ë¯¸ ë¡œë“œëœ ê²½ìš° ì¦‰ì‹œ ì ìš©
         if (UInputMappingContext* LoadedMapping = InputMappingSubsystem->GetDefaultInputMappingContext())
         {
             InputMappingSubsystem->ApplyDefaultInputMapping(this);
         }
         else
         {
-            // ºñµ¿±â ·Îµå°¡ ³¡³­ ÈÄ Àû¿ë
+            // ë¹„ë™ê¸° ë¡œë“œê°€ ëë‚œ í›„ ì ìš©
             InputMappingSubsystem->OnDefaultInputMappingLoaded.AddDynamic(this, &ADLPlayerController::ApplyLoadedInputMapping);
         }
     }
@@ -113,11 +129,24 @@ void ADLPlayerController::OnPossess(APawn* NewPawn)
     }  
 }
 
+void ADLPlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+    if (UDLAbilitySystemComponent* DLASC = GetDLAbilitySystemComponent())
+    {
+        DLASC->ProcessAbilityInput(DeltaTime, bGamePaused);
+    }
+    
+    Super::PostProcessInput(DeltaTime, bGamePaused);
+}
+
 void ADLPlayerController::BindInputActions(UDLInputConfig* InInputConfig)
 {
     UDLInputComponent* DLInputComponent = CastChecked<UDLInputComponent>(InputComponent);
     const FDLGameplayTags& GameplayTags = FDLGameplayTags::Get();
 
+    TArray<uint32> BindHandles;
+    DLInputComponent->BindAbilityActions(InInputConfig, this, &ThisClass::Input_AbilityInputTagStarted, &ThisClass::Input_AbilityInputTagPressed, &ThisClass::Input_AbilityInputTagReleased, BindHandles);
+    
     DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, false);
     DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_Look_Mouse, ETriggerEvent::Triggered, this, &ThisClass::Input_LookMouse, false);
     DLInputComponent->BindNativeAction(InInputConfig, GameplayTags.InputTag_ChangeEquip_Primary, ETriggerEvent::Triggered, this, &ThisClass::Input_ChangeEquip_Weapon_Primary, false);
@@ -125,9 +154,42 @@ void ADLPlayerController::BindInputActions(UDLInputConfig* InInputConfig)
 
 }
 
+void ADLPlayerController::Input_AbilityInputTagStarted(FGameplayTag InputTag)
+{
+    if (GetPlayerState<ADLPlayerState>())
+    {
+        if (UDLAbilitySystemComponent* ASC = GetPlayerState<ADLPlayerState>()->GetDLAbilitySystemComponent())
+        {
+            ASC->AbilityInputTagStarted(InputTag);
+        }
+    }
+}
+
+void ADLPlayerController::Input_AbilityInputTagPressed(FGameplayTag InputTag)
+{
+    if (GetPlayerState<ADLPlayerState>())
+    {
+        if (UDLAbilitySystemComponent* ASC = GetPlayerState<ADLPlayerState>()->GetDLAbilitySystemComponent())
+        {
+            ASC->AbilityInputTagPressed(InputTag);
+        }
+    }
+}
+
+void ADLPlayerController::Input_AbilityInputTagReleased(FGameplayTag InputTag)
+{
+    if (GetPlayerState<ADLPlayerState>())
+    {
+        if (UDLAbilitySystemComponent* ASC = GetPlayerState<ADLPlayerState>()->GetDLAbilitySystemComponent())
+        {
+            ASC->AbilityInputTagReleased(InputTag);
+        }
+    }
+}
+
 void ADLPlayerController::UpdateHiddenComponents(const FVector& ViewLocation, TSet<FPrimitiveComponentId>& OutHiddenComponents)
 {
-    // OutHiddenComponents´Â ·»´õ¸µ ¿£ÁøÀÌ ¹«½ÃÇÒ ÄÄÆ÷³ÍÆ®µé
+    // OutHiddenComponentsëŠ” ë Œë”ë§ ì—”ì§„ì´ ë¬´ì‹œí•  ì»´í¬ë„ŒíŠ¸ë“¤
     Super::UpdateHiddenComponents(ViewLocation, OutHiddenComponents);
 
     if (bHideViewTargetPawnNextFrame)
@@ -139,10 +201,10 @@ void ADLPlayerController::UpdateHiddenComponents(const FVector& ViewLocation, TS
                 {
                     for (UPrimitiveComponent* Comp : InComponents)
                     {
-                        // ÄÄÆ÷³ÍÆ®°¡ ¿ùµå¿¡ µî·ÏµÇ¾î ÀÖ¾î¾ß ·»´õ¸µ Á¤º¸ Á¸Àç
+                        // ì»´í¬ë„ŒíŠ¸ê°€ ì›”ë“œì— ë“±ë¡ë˜ì–´ ìˆì–´ì•¼ ë Œë”ë§ ì •ë³´ ì¡´ì¬
                         if (Comp->IsRegistered())
                         {
-                            // ·»´õ¸µ ½Ã½ºÅÛ¿¡¼­ ½Äº°ÇÏ´Â ID
+                            // ë Œë”ë§ ì‹œìŠ¤í…œì—ì„œ ì‹ë³„í•˜ëŠ” ID
                             OutHiddenComponents.Add(Comp->GetPrimitiveSceneId());
 
                             for (USceneComponent* AttachedChild : Comp->GetAttachChildren())
@@ -158,15 +220,15 @@ void ADLPlayerController::UpdateHiddenComponents(const FVector& ViewLocation, TS
                     }
                 };
 
-            //TODO ¸ğµç ÄÄÆ÷³ÍÆ®¸¦ ¼û±âÁö ¾Ê°í ÀÏºÎ¸¸ ¼û±â°í ½ÍÀ» °æ¿ì ÀÌ Ã³¸®¸¦ ÀÎÅÍÆäÀÌ½º ±â¹İÀ¸·Î À§ÀÓ
-            //TODO °Å¸® ±â¹İ Åõ¸íµµ Á¶Àı µîÀ¸·Î Á» ´õ ºÎµå·´°Ô Ã³¸®
+            //TODO ëª¨ë“  ì»´í¬ë„ŒíŠ¸ë¥¼ ìˆ¨ê¸°ì§€ ì•Šê³  ì¼ë¶€ë§Œ ìˆ¨ê¸°ê³  ì‹¶ì„ ê²½ìš° ì´ ì²˜ë¦¬ë¥¼ ì¸í„°í˜ì´ìŠ¤ ê¸°ë°˜ìœ¼ë¡œ ìœ„ì„
+            //TODO ê±°ë¦¬ ê¸°ë°˜ íˆ¬ëª…ë„ ì¡°ì ˆ ë“±ìœ¼ë¡œ ì¢€ ë” ë¶€ë“œëŸ½ê²Œ ì²˜ë¦¬
 
-            // ÆùÀÇ ÄÄÆ÷³ÍÆ®µéÀ» hidden ·ÎÁ÷
+            // í°ì˜ ì»´í¬ë„ŒíŠ¸ë“¤ì„ hidden ë¡œì§
             TInlineComponentArray<UPrimitiveComponent*> PawnComponents;
             ViewTargetPawn->GetComponents(PawnComponents);
             AddToHiddenComponents(PawnComponents);
 
-            //// ¹«±â ¼û±â±â
+            //// ë¬´ê¸° ìˆ¨ê¸°ê¸°
             //if (ViewTargetPawn->CurrentWeapon)
             //{
             //	TInlineComponentArray<UPrimitiveComponent*> WeaponComponents;
@@ -181,7 +243,7 @@ void ADLPlayerController::UpdateHiddenComponents(const FVector& ViewLocation, TS
 
 void ADLPlayerController::OnCameraPenetratingTarget()
 {
-    // TODO: Hidden ·ÎÁ÷
+    // TODO: Hidden ï¿½ï¿½ï¿½ï¿½
     bHideViewTargetPawnNextFrame = true;
 }
 

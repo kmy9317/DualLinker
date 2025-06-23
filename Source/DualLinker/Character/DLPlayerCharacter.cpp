@@ -67,18 +67,18 @@ void ADLPlayerCharacter::Move(const FVector2D& InputVector)
 
 		if (InputVector.X != 0.0f)
 		{
-			// Left/Right -> X °ª¿¡ µé¾îÀÖÀ½:
-			// MovementDirectionÀº ÇöÀç Ä«¸Ş¶óÀÇ RightVector¸¦ ÀÇ¹ÌÇÔ (World-Space)
+			// Left/Right -> X ê°’ì— ë“¤ì–´ìˆìŒ:
+			// MovementDirectionì€ í˜„ì¬ ì¹´ë©”ë¼ì˜ RightVectorë¥¼ ì˜ë¯¸í•¨ (World-Space)
 			const FVector MovementDirection = MovementRotation.RotateVector(FVector::RightVector);
 
-			// AddMovementInput ÇÔ¼ö¸¦ ÇÑ¹ø º¸ÀÚ:
-			// - ³»ºÎÀûÀ¸·Î MovementDirection * Value.X¸¦ MovementComponent¿¡ Àû¿ë(´õÇÏ±â)ÇØÁØ´Ù
+			// AddMovementInput í•¨ìˆ˜ë¥¼ í•œë²ˆ ë³´ì:
+			// - ë‚´ë¶€ì ìœ¼ë¡œ MovementDirection * Value.Xë¥¼ MovementComponentì— ì ìš©(ë”í•˜ê¸°)í•´ì¤€ë‹¤
 			AddMovementInput(MovementDirection, InputVector.X);
 		}
 
-		if (InputVector.Y != 0.0f) // ¾Õ¼­ ¿ì¸®´Â Forward Àû¿ëÀ» À§ÇØ swizzle input modifier¸¦ »ç¿ëÇß´Ù~
+		if (InputVector.Y != 0.0f) // ì•ì„œ ìš°ë¦¬ëŠ” Forward ì ìš©ì„ ìœ„í•´ swizzle input modifierë¥¼ ì‚¬ìš©í–ˆë‹¤~
 		{
-			// ¾Õ¼­ Left/Right¿Í ¸¶Âù°¡Áö·Î Forward/Backward¸¦ Àû¿ëÇÑ´Ù
+			// ì•ì„œ Left/Rightì™€ ë§ˆì°¬ê°€ì§€ë¡œ Forward/Backwardë¥¼ ì ìš©í•œë‹¤
 			const FVector MovementDirection = MovementRotation.RotateVector(FVector::ForwardVector);
 			AddMovementInput(MovementDirection, InputVector.Y);
 		}
@@ -90,14 +90,14 @@ void ADLPlayerCharacter::Look(const FVector2D& InputVector)
 
 	if (InputVector.X != 0.0f)
 	{
-		// X¿¡´Â Yaw °ªÀÌ ÀÖÀ½:
-		// - Camera¿¡ ´ëÇØ Yaw Àû¿ë
+		// Xì—ëŠ” Yaw ê°’ì´ ìˆìŒ:
+		// - Cameraì— ëŒ€í•´ Yaw ì ìš©
 		AddControllerYawInput(InputVector.X);
 	}
 
 	if (InputVector.Y != 0.0f)
 	{
-		// Y¿¡´Â Pitch °ª!
+		// Yì—ëŠ” Pitch ê°’!
 		double AimInversionValue = -InputVector.Y;
 		AddControllerPitchInput(AimInversionValue);
 	}

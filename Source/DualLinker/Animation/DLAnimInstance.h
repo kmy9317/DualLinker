@@ -41,7 +41,7 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	float LocomotionDirection;
-	/** GameplayTag¿Í AnimInstanceÀÇ ¼Ó¼º°ªÀ» ¸ÅÇÎÇØÁØ´Ù */
+	/** GameplayTagì™€ AnimInstanceì˜ ì†ì„±ê°’ì„ ë§¤í•‘í•´ì¤€ë‹¤ */
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayTags")
 	FGameplayTagBlueprintPropertyMap GameplayTagPropertyMap;
 };

@@ -33,7 +33,7 @@ void FDLEquipmentEntry::Init(UDLItemInstance* InItemInstance, int32 InItemCount)
 	const UDLItemTemplate& ItemTemplate = UDLItemData::Get().FindItemTemplateByID(ItemInstance->GetItemTemplateID());
 	ItemCount = FMath::Clamp(InItemCount, 1, ItemTemplate.MaxStackCount);
 
-	// ÇöÀç ÃÊ±âÈ­ÇÏ´Â Àåºñ°¡ Âø¿ëÁßÀÎ Àåºñ »óÅÂ(EX: Primary°è¿­ Ãß°¡->ÇöÀç Primary Àåºñ ÀåÂø »óÅÂ)¶ó¸é ¹Ù·Î Âø¿ë
+	// í˜„ì¬ ì´ˆê¸°í™”í•˜ëŠ” ì¥ë¹„ê°€ ì°©ìš©ì¤‘ì¸ ì¥ë¹„ ìƒíƒœ(EX: Primaryê³„ì—´ ì¶”ê°€->í˜„ì¬ Primary ì¥ë¹„ ì¥ì°© ìƒíƒœ)ë¼ë©´ ë°”ë¡œ ì°©ìš©
 	if (EquippableFragment->EquipmentType == EEquipmentType::Armor || EquipmentManager->IsSameEquipState(EquipmentSlotType, EquipManager->GetCurrentEquipState()))
 	{
 		EquipManager->Equip(EquipmentSlotType, ItemInstance);
@@ -46,7 +46,7 @@ UDLItemInstance* FDLEquipmentEntry::Reset()
 	if (EquipManager == nullptr)
 		return nullptr;
 
-	// ÇöÀç SlotÀÇ ItemÀÌ Àåºñ ¸ñ·Ï¿¡ µî·ÏÁßÀÎ °æ¿ì EquipManager¿¡ UnequipÀÇ·Ú(ÇöÀç ÀåÂøÁßÀÎ °æ¿ì Unequip)
+	// í˜„ì¬ Slotì˜ Itemì´ ì¥ë¹„ ëª©ë¡ì— ë“±ë¡ì¤‘ì¸ ê²½ìš° EquipManagerì— Unequipì˜ë¢°(í˜„ì¬ ì¥ì°©ì¤‘ì¸ ê²½ìš° Unequip)
 	if (ItemInstance)
 	{
 		EquipManager->Unequip(EquipmentSlotType);
@@ -56,7 +56,7 @@ UDLItemInstance* FDLEquipmentEntry::Reset()
 	ItemInstance = nullptr;
 	ItemCount = 0;
 	
-	// ¹«±â Unequip½Ã ±âÁ¸ÀÇ EquipState¿¡ ÇØ´çÇÏ´Â ¹«±â Slotµé Áß ¾î¶°ÇÑ Slotµéµµ Instance°¡ Á¸ÀçÇÏÁö ¾Ê´Ù¸é Unarmed»óÅÂ·Î º¯°æ
+	// ë¬´ê¸° Unequipì‹œ ê¸°ì¡´ì˜ EquipStateì— í•´ë‹¹í•˜ëŠ” ë¬´ê¸° Slotë“¤ ì¤‘ ì–´ë– í•œ Slotë“¤ë„ Instanceê°€ ì¡´ì¬í•˜ì§€ ì•Šë‹¤ë©´ Unarmedìƒíƒœë¡œ ë³€ê²½
 	if (EquipmentManager->IsAllEmpty(EquipManager->GetCurrentEquipState()))
 	{
 		EquipManager->ChangeEquipState(EEquipState::Unarmed);
@@ -104,7 +104,7 @@ void UDLEquipmentManagerComponent::SetEquipment(EEquipmentSlotType EquipmentSlot
 		return;
 
 	const int32 ItemTemplateID = UDLItemData::Get().FindItemTemplateIDByClass(ItemTemplateClass);
-	// ¾ÆÀÌÅÛ ÅÛÇÃ¸´Àº instanceÈ­ ÇÒ ÀÏÁ¾ÀÇ ¸ŞÅ¸ µ¥ÀÌÅÍ¸¸ °¡Áö°í ÀÖ±â¿¡ CDOÇüÅÂ·Î ºÒ·¯¿Â´Ù
+	// ì•„ì´í…œ í…œí”Œë¦¿ì€ instanceí™” í•  ì¼ì¢…ì˜ ë©”íƒ€ ë°ì´í„°ë§Œ ê°€ì§€ê³  ìˆê¸°ì— CDOí˜•íƒœë¡œ ë¶ˆëŸ¬ì˜¨ë‹¤
 	const UDLItemTemplate& ItemTemplate = UDLItemData::Get().FindItemTemplateByID(ItemTemplateID);
 
 	ItemCount = FMath::Clamp(ItemCount, 1, ItemTemplate.MaxStackCount);
@@ -113,7 +113,7 @@ void UDLEquipmentManagerComponent::SetEquipment(EEquipmentSlotType EquipmentSlot
 	if (EquippableFragment == nullptr)
 		return;
 
-	// ÇöÀç ÇØ´ç ½½·ÔÀ» Clear
+	// í˜„ì¬ í•´ë‹¹ ìŠ¬ë¡¯ì„ Clear
 	FDLEquipmentEntry& Entry = EquipmentList.Entries[(int32)EquipmentSlotType];
 	Entry.Reset();
 
@@ -126,12 +126,12 @@ void UDLEquipmentManagerComponent::SetEquipment(EEquipmentSlotType EquipmentSlot
 		{
 			if (WeaponHandType == EWeaponHandType::LeftHand || WeaponHandType == EWeaponHandType::RightHand)
 			{
-				// ÇöÀç ¹«±â°¡ ¿Ş/¿À¸¥¼Õ Å¸ÀÔÀÌ¶ó¸é ±âÁ¸ÀÇ ¾ç¼Õ ¹«±â¸¦ EquipmentList¿¡¼­ Á¦°Å, EquipÁßÀÎ °æ¿ì EquipManager¿¡¼­ Unequip
+				// í˜„ì¬ ë¬´ê¸°ê°€ ì™¼/ì˜¤ë¥¸ì† íƒ€ì…ì´ë¼ë©´ ê¸°ì¡´ì˜ ì–‘ì† ë¬´ê¸°ë¥¼ EquipmentListì—ì„œ ì œê±°, Equipì¤‘ì¸ ê²½ìš° EquipManagerì—ì„œ Unequip
 				RemoveEquipment(EEquipmentSlotType::Primary_TwoHand, 1);
 			}
 			else if (WeaponHandType == EWeaponHandType::TwoHand)
 			{
-				// ÇöÀç ¹«±â°¡ ¾ç¼Õ Å¸ÀÔÀÌ¶ó¸é ±âÁ¸ÀÇ ¿Ş/¿À¸¥¼Õ ¹«±âµéÀ» EquipmentList¿¡¼­ Á¦°Å, EquipÁßÀÎ °æ¿ì EquipManager¿¡¼­ Unequip
+				// í˜„ì¬ ë¬´ê¸°ê°€ ì–‘ì† íƒ€ì…ì´ë¼ë©´ ê¸°ì¡´ì˜ ì™¼/ì˜¤ë¥¸ì† ë¬´ê¸°ë“¤ì„ EquipmentListì—ì„œ ì œê±°, Equipì¤‘ì¸ ê²½ìš° EquipManagerì—ì„œ Unequip
 				RemoveEquipment(EEquipmentSlotType::Primary_LeftHand, 1);
 				RemoveEquipment(EEquipmentSlotType::Primary_RightHand, 1);
 			}
@@ -179,7 +179,7 @@ UDLItemInstance* UDLEquipmentManagerComponent::RemoveEquipment(EEquipmentSlotTyp
 	FDLEquipmentEntry& Entry = EquipmentList.Entries[(int32)EquipmentSlotType];
 	UDLItemInstance* ItemInstance = Entry.GetItemInstance();
 
-	// 2°³ ÀÌ»óÀÇ Âø¿ë °¡´ÉÇÑ ÀåÂø¹°ÀÌ ¾Æ´Ñ 1°³ÀÇ count¸¦ Áö´Ñ º¸ÅëÀÇ WeaponÅ¸ÀÔµéÀº ÇØ´ç Àåºñ destroy ·ÎÁ÷ ½ÇÇàÇÔ.
+	// 2ê°œ ì´ìƒì˜ ì°©ìš© ê°€ëŠ¥í•œ ì¥ì°©ë¬¼ì´ ì•„ë‹Œ 1ê°œì˜ countë¥¼ ì§€ë‹Œ ë³´í†µì˜ Weaponíƒ€ì…ë“¤ì€ í•´ë‹¹ ì¥ë¹„ destroy ë¡œì§ ì‹¤í–‰í•¨.
 	Entry.ItemCount -= ItemCount;
 
 	if (Entry.ItemCount <= 0) Entry.Reset();

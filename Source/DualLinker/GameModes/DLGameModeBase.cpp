@@ -52,7 +52,7 @@ void ADLGameModeBase::HandleStartingNewPlayer_Implementation(APlayerController* 
 {
     if (IsExperienceLoaded())
     {
-        // ³»ºÎÀûÀ¸·Î RestartPlayer°¡ ½ÇÇàµÊ.
+        // ë‚´ë¶€ì ìœ¼ë¡œ RestartPlayerê°€ ì‹¤í–‰ë¨.
         Super::HandleStartingNewPlayer_Implementation(NewPlayer);
     }
 }
@@ -78,7 +78,7 @@ APawn* ADLGameModeBase::SpawnDefaultPawnAtTransform_Implementation(AController* 
 
 void ADLGameModeBase::RequestLoadingExperience()
 {
-    // GameInstanceSubsystem¿¡¼­ ExperienceSubsystem °¡Á®¿À±â
+    // GameInstanceSubsystemì—ì„œ ExperienceSubsystem ê°€ì ¸ì˜¤ê¸°
     UDLExperienceSubsystem* ExperienceSubsystem = GetGameInstance()->GetSubsystem<UDLExperienceSubsystem>();
 
     if (ExperienceSubsystem)
@@ -87,15 +87,15 @@ void ADLGameModeBase::RequestLoadingExperience()
         UAssetManager& AssetManager = UAssetManager::Get();
 
         // fall back to the default experience
-        // ÀÏ´Ü ±âº» ¿É¼ÇÀ¸·Î defaultÇÏ°Ô B_DLDefaultExperience·Î ¼³Á¤ÇÏÀÚ
+        // ì¼ë‹¨ ê¸°ë³¸ ì˜µì…˜ìœ¼ë¡œ defaultí•˜ê²Œ B_DLDefaultExperienceë¡œ ì„¤ì •í•˜ìž
         if (!ExperienceId.IsValid() && UGameplayStatics::HasOption(OptionsString, TEXT("Experience")))
         {
-            // ExperienceÀÇ Value¸¦ °¡Á®¿Í¼­, PrimaryAssetId¸¦ »ý¼ºÇØÁØ´Ù. ÀÌ¶§, DLExperienceDefintionÀÇ Class ÀÌ¸§À» »ç¿ëÇÑ´Ù
+            // Experienceì˜ Valueë¥¼ ê°€ì ¸ì™€ì„œ, PrimaryAssetIdë¥¼ ìƒì„±í•´ì¤€ë‹¤. ì´ë•Œ, DLExperienceDefintionì˜ Class ì´ë¦„ì„ ì‚¬ìš©í•œë‹¤
             const FString ExperienceFromOptions = UGameplayStatics::ParseOption(OptionsString, TEXT("Experience"));
 
-            // Ã¶ÀÚ ¿À·ù ¹× ½ºÄµÀÌ ¾ÈµÈ °æ¿ì¸¦ Á¦¿ÜÇÏ°í Á¦´ë·Î µÈ °ªÀ» °¡Á®¿Â´Ù.
-            // FPrimaryAssetTypeÀº ÇÁ·ÎÁ§Æ® ¼¼ÆÃ¿¡¼­ AssetBaseClass¿¡ ÁöÁ¤ÇÑ Å¸ÀÔµé¿¡ ´ëÇÑ ¿¡¼Âµé¿¡ ÀÏÁ¾ÀÇ Ä«Å×°í¸® ÀÌ¸§ÀÌ´Ù.
-            // FNameÀÎÀÚ´Â ÀÌ Ä«Å×°í¸® ³» Æ¯Á¤ ¿¡¼ÂÀ» °¡Á®¿À±â À§ÇÑ °Í.
+            // ì² ìž ì˜¤ë¥˜ ë° ìŠ¤ìº”ì´ ì•ˆëœ ê²½ìš°ë¥¼ ì œì™¸í•˜ê³  ì œëŒ€ë¡œ ëœ ê°’ì„ ê°€ì ¸ì˜¨ë‹¤.
+            // FPrimaryAssetTypeì€ í”„ë¡œì íŠ¸ ì„¸íŒ…ì—ì„œ AssetBaseClassì— ì§€ì •í•œ íƒ€ìž…ë“¤ì— ëŒ€í•œ ì—ì…‹ë“¤ì— ì¼ì¢…ì˜ ì¹´í…Œê³ ë¦¬ ì´ë¦„ì´ë‹¤.
+            // FNameì¸ìžëŠ” ì´ ì¹´í…Œê³ ë¦¬ ë‚´ íŠ¹ì • ì—ì…‹ì„ ê°€ì ¸ì˜¤ê¸° ìœ„í•œ ê²ƒ.
             ExperienceId = FPrimaryAssetId(FPrimaryAssetType(UDLExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromOptions));
         }
         if (!ExperienceId.IsValid())

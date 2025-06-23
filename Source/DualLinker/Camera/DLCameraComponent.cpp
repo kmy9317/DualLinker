@@ -16,7 +16,7 @@ void UDLCameraComponent::OnRegister()
 
 	if (!CameraModeStack)
 	{
-		// Ä«¸Ş¶ó ÄÄÆ÷³ÍÆ®¸¦ Áö±İ »ı¼ºÇÑ CameraModeStackÀÇ Outer·Î ÁöÁ¤
+		// ì¹´ë©”ë¼ ì»´í¬ë„ŒíŠ¸ë¥¼ ì§€ê¸ˆ ìƒì„±í•œ CameraModeStackì˜ Outerë¡œ ì§€ì •
 		CameraModeStack = NewObject<UDLCameraModeStack>(this);
 	}
 }
@@ -34,20 +34,20 @@ void UDLCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desire
 	{
 		if (APlayerController* PC = TargetPawn->GetController<APlayerController>())
 		{
-			// PlayerControllerÀÇ ControlRotationÀ» °è»êµÈ CamerModeViewÀÇ ControlRotationÀ¸·Î ¾÷µ¥ÀÌÆ®
-			// ÇØ´ç ÇÔ¼ö´Â PC°¡ PossessÇÏ°í ÀÖ´Â PawnÀÇ RootComponentÀÇ ControlRotationÀ» ¹İ¿µ(Á¶Á¾ Ä³¸¯¿¡ ¹İ¿µ)
+			// PlayerControllerì˜ ControlRotationì„ ê³„ì‚°ëœ CamerModeViewì˜ ControlRotationìœ¼ë¡œ ì—…ë°ì´íŠ¸
+			// í•´ë‹¹ í•¨ìˆ˜ëŠ” PCê°€ Possessí•˜ê³  ìˆëŠ” Pawnì˜ RootComponentì˜ ControlRotationì„ ë°˜ì˜(ì¡°ì¢… ìºë¦­ì— ë°˜ì˜)
 			PC->SetControlRotation(CameraModeView.ControlRotation);
 		}
 	}
 
-	// CameraÀÇ Location°ú RotationÀ» ¹İ¿µ
+	// Cameraì˜ Locationê³¼ Rotationì„ ë°˜ì˜
 	SetWorldLocationAndRotation(CameraModeView.Location, CameraModeView.Rotation);
 
-	// FOV ¾÷µ¥ÀÌÆ®
+	// FOV ì—…ë°ì´íŠ¸
 	FieldOfView = CameraModeView.FieldOfView;
 
-	 // FMinimalViewInfo´Â ¿£ÁøÀÌ Ä«¸Ş¶ó¸¦ ·»´õ¸µÇÏ´Âµ¥ ÇÊ¿äÇÑ ¸ğµç ±âº» Á¤º¸¸¦ Æ÷ÇÔÇÏ°í ÀÖ´Â ÇÙ½É ±¸Á¶Ã¼
-	 // - CameraComponentÀÇ º¯È­ »çÇ×À» ¹İ¿µÇØ¼­ ÃÖÁ¾ ·»´õ¸µ±îÁö ¹İ¿µÇÏ°Ô µÊ
+	 // FMinimalViewInfoëŠ” ì—”ì§„ì´ ì¹´ë©”ë¼ë¥¼ ë Œë”ë§í•˜ëŠ”ë° í•„ìš”í•œ ëª¨ë“  ê¸°ë³¸ ì •ë³´ë¥¼ í¬í•¨í•˜ê³  ìˆëŠ” í•µì‹¬ êµ¬ì¡°ì²´
+	 // - CameraComponentì˜ ë³€í™” ì‚¬í•­ì„ ë°˜ì˜í•´ì„œ ìµœì¢… ë Œë”ë§ê¹Œì§€ ë°˜ì˜í•˜ê²Œ ë¨
 	DesiredView.Location = CameraModeView.Location;
 	DesiredView.Rotation = CameraModeView.Rotation;
 	DesiredView.FOV = CameraModeView.FieldOfView;

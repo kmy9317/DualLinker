@@ -10,8 +10,8 @@ UDLInputConfig::UDLInputConfig(const FObjectInitializer& ObjectInitializer) : Su
 
 const UInputAction* UDLInputConfig::FindNativeInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
 {
-	// NativeInputActionsÀ» ¼øÈ¸ÇÏ¸ç, InputÀ¸·Î µé¾î¿Â InputTag°¡ ÀÖ´ÂÁö Ã¼Å©ÇÑ´Ù:
-	// - ÀÖÀ¸¸é, ±×¿¡ µû¸¥ InputActionÀ» ¹İÈ¯ÇÏÁö¸¸, ¾ø´Ù¸é, ±×³É nullptrÀ» ¹İÈ¯ÇÑ´Ù.
+	// NativeInputActionsì„ ìˆœíšŒí•˜ë©°, Inputìœ¼ë¡œ ë“¤ì–´ì˜¨ InputTagê°€ ìˆëŠ”ì§€ ì²´í¬í•œë‹¤:
+	// - ìˆìœ¼ë©´, ê·¸ì— ë”°ë¥¸ InputActionì„ ë°˜í™˜í•˜ì§€ë§Œ, ì—†ë‹¤ë©´, ê·¸ëƒ¥ nullptrì„ ë°˜í™˜í•œë‹¤.
 	for (const FDLInputAction& Action : NativeInputActions)
 	{
 		if (Action.InputAction && (Action.InputTag == InputTag))

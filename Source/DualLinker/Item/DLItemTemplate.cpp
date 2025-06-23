@@ -18,14 +18,14 @@ EDataValidationResult UDLItemTemplate::IsDataValid(FDataValidationContext& Conte
 {
 	EDataValidationResult Result = UObject::IsDataValid(Context);
 
-	// ¾ÆÀÌÅÛÀº ÃÖ¼Ò 1ÀÌ»ó(¹«±â(1·Î Á¦ÇÑ), ¹°¾à µîµî)
+	// ì•„ì´í…œì€ ìµœì†Œ 1ì´ìƒ(ë¬´ê¸°(1ë¡œ ì œí•œ), ë¬¼ì•½ ë“±ë“±)
 	if (MaxStackCount < 1)
 	{
 		Context.AddError(FText::FromString(FString::Printf(TEXT("MaxStackCount is less than 1"))));
 		Result = EDataValidationResult::Invalid;
 	}
 
-	// Equippable¼Ó¼ºÀº Áßº¹µÉ ¼ö ¾ø±â¿¡ °Ë»ç ÁøÇà.
+	// Equippableì†ì„±ì€ ì¤‘ë³µë  ìˆ˜ ì—†ê¸°ì— ê²€ì‚¬ ì§„í–‰.
 	const UDLItemFragment_Equippable* FoundEquippable = nullptr;
 	for (UDLItemFragment* Fragment : Fragments)
 	{
@@ -86,7 +86,7 @@ const UDLItemFragment* UDLItemTemplate::FindFragmentByClass(TSubclassOf<UDLItemF
 	{
 		for (UDLItemFragment* Fragment : Fragments)
 		{
-			// Fragments¸¦ ¼øÈ¸ÇÏ¿© IsA()¸¦ ÅëÇØ ÇØ´ç Å¬·¡½º¸¦ °¡Áö°í ÀÖ´ÂÁö È®ÀÎÇÑ´Ù:
+			// Fragmentsë¥¼ ìˆœíšŒí•˜ì—¬ IsA()ë¥¼ í†µí•´ í•´ë‹¹ í´ë˜ìŠ¤ë¥¼ ê°€ì§€ê³  ìˆëŠ”ì§€ í™•ì¸í•œë‹¤:
 			if (Fragment && Fragment->IsA(FragmentClass))
 			{
 				return Fragment;

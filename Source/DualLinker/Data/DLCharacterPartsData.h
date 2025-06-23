@@ -14,11 +14,11 @@ struct FDLCharacterMeshSlot
 {
     GENERATED_BODY()
 
-    // ÇØ´ç ½½·ÔÀÇ ±âº» ¸Ş½¬
+    // í•´ë‹¹ ìŠ¬ë¡¯ì˜ ê¸°ë³¸ ë©”ì‰¬
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mesh Slot")
     TSoftObjectPtr<USkeletalMesh> Mesh;
 
-    // ÇØ´ç ¸Ş½¬¿¡ Àû¿ëÇÒ ¸ÓÆ¼¸®¾ó ¹è¿­ (ÇÊ¿ä½Ã ¿©·¯ ¸ÓÆ¼¸®¾óÀ» Àû¿ë °¡´É)
+    // í•´ë‹¹ ë©”ì‰¬ì— ì ìš©í•  ë¨¸í‹°ë¦¬ì–¼ ë°°ì—´ (í•„ìš”ì‹œ ì—¬ëŸ¬ ë¨¸í‹°ë¦¬ì–¼ì„ ì ìš© ê°€ëŠ¥)
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mesh Slot")
     TArray<TSoftObjectPtr<UMaterialInterface>> Materials;
 };
@@ -38,7 +38,7 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Mesh Part")
     TArray<FDLCharacterMeshSlot> BodyMeshes;
 
-    // ³ª¸ÓÁö Á¤Àû ¸Ş½¬ ¿É¼Ç ¹è¿­
+    // ë‚˜ë¨¸ì§€ ì •ì  ë©”ì‰¬ ì˜µì…˜ ë°°ì—´
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Mesh Part")
     TArray<FDLCharacterMeshSlot> DefaultMeshes;
 };

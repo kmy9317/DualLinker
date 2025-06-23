@@ -16,7 +16,7 @@ class ADLPlayerCharacter;
 class ADLPlayerController;
 
 /**
- * - ÇöÀç Àåºñ ½½·Ô¿¡ µî·ÏÁßÀÎ ¾ÆÀÌÅÛ(Àåºñ) Á¤º¸
+ * - í˜„ì¬ ì¥ë¹„ ìŠ¬ë¡¯ì— ë“±ë¡ì¤‘ì¸ ì•„ì´í…œ(ì¥ë¹„) ì •ë³´
  */
 USTRUCT(BlueprintType)
 struct FDLEquipmentEntry
@@ -34,26 +34,26 @@ public:
 	int32 GetItemCount() const { return ItemCount; }
 
 private:
-	/** ItemTemplateÀ» ÅëÇØ »ı¼ºµÈ ÀÎ½ºÅÏ½º */
+	/** ItemTemplateì„ í†µí•´ ìƒì„±ëœ ì¸ìŠ¤í„´ìŠ¤ */
 	UPROPERTY()
 	TObjectPtr<UDLItemInstance> ItemInstance;
 
-	/** ÇöÀç ÀåÂø¹°ÀÇ °¹¼ö */
+	/** í˜„ì¬ ì¥ì°©ë¬¼ì˜ ê°¯ìˆ˜ */
 	UPROPERTY()
 	int32 ItemCount = 0;
 
-	/** ÇöÀç ÀåÂø¹°ÀÇ ½½·Ô Å¸ÀÔ*/
+	/** í˜„ì¬ ì¥ì°©ë¬¼ì˜ ìŠ¬ë¡¯ íƒ€ì…*/
 	UPROPERTY()
 	EEquipmentSlotType EquipmentSlotType = EEquipmentSlotType::Count;
 
-	/** ÇöÀç Entry¸¦ °ü¸®ÁßÀÎ ¸Å´ÏÀú Ä³½Ì*/
+	/** í˜„ì¬ Entryë¥¼ ê´€ë¦¬ì¤‘ì¸ ë§¤ë‹ˆì € ìºì‹±*/
 	UPROPERTY()
 	TObjectPtr<UDLEquipmentManagerComponent> EquipmentManager;
 };
 
 /**
- * - EquipmentManager ÃÊ±âÈ­ ½ÃÁ¡¿¡ °¢°¢ÀÇ Àåºñ ½½·ÔÀ» ´ã´çÇÏ´Â EntryµéÀ» °ü¸®ÇÏ´Â ¸®½ºÆ®¸¦ »ı¼º
- * - DLEquipmentList´Â ¾ÆÀÌÅÛÀÇ Á¤º¸¸¦ °¡Áø EntryµéÀ» °ü¸®.
+ * - EquipmentManager ì´ˆê¸°í™” ì‹œì ì— ê°ê°ì˜ ì¥ë¹„ ìŠ¬ë¡¯ì„ ë‹´ë‹¹í•˜ëŠ” Entryë“¤ì„ ê´€ë¦¬í•˜ëŠ” ë¦¬ìŠ¤íŠ¸ë¥¼ ìƒì„±
+ * - DLEquipmentListëŠ” ì•„ì´í…œì˜ ì •ë³´ë¥¼ ê°€ì§„ Entryë“¤ì„ ê´€ë¦¬.
  */
 USTRUCT(BlueprintType)
 struct FDLEquipmentList
@@ -71,7 +71,7 @@ public:
 	const TArray<FDLEquipmentEntry>& GetAllEntries() const { return Entries; }
 
 private:
-	/** ÇöÀç Àåºñµé¿¡ ´ëÇÑ °ü¸® ¸®½ºÆ® */
+	/** í˜„ì¬ ì¥ë¹„ë“¤ì— ëŒ€í•œ ê´€ë¦¬ ë¦¬ìŠ¤íŠ¸ */
 	UPROPERTY()
 	TArray<FDLEquipmentEntry> Entries;
 
@@ -92,13 +92,13 @@ protected:
 	virtual void InitializeComponent() override;
 
 public:
-	// »õ·Î¿î ÀåÂø°è¿­ ¾ÆÀÌÅÛÀ» ÇØ´çÇÏ´Â ½½·Ô¿¡ ÀåÂøÇØÁÖ´Â ÇÔ¼ö
+	// ìƒˆë¡œìš´ ì¥ì°©ê³„ì—´ ì•„ì´í…œì„ í•´ë‹¹í•˜ëŠ” ìŠ¬ë¡¯ì— ì¥ì°©í•´ì£¼ëŠ” í•¨ìˆ˜
 	void SetEquipment(EEquipmentSlotType EquipmentSlotType, TSubclassOf<UDLItemTemplate> ItemTemplateClass, int32 ItemCount);
 
-	// ÃÊ±â Unarmed »óÅÂ¿¡ ´ëÇÑ Left, Right Àåºñ ÀåÂø
+	// ì´ˆê¸° Unarmed ìƒíƒœì— ëŒ€í•œ Left, Right ì¥ë¹„ ì¥ì°©
 	void AddUnarmedEquipments(TSubclassOf<UDLItemTemplate> LeftHandClass, TSubclassOf<UDLItemTemplate> RightHandClass);
 
-	// ÇöÀç Àåºñ ½½·Ô¿¡ ÇØ´çÇÏ´Â EntryÀÇ ¾ÆÀÌÅÛ Á¤º¸¸¦ Á¦°ÅÇÏ´Â ·ÎÁ÷(ÇöÀç ÀåºñÁßÀÎ °æ¿ì EquipManager¿¡¼­ Á¦°Å)
+	// í˜„ì¬ ì¥ë¹„ ìŠ¬ë¡¯ì— í•´ë‹¹í•˜ëŠ” Entryì˜ ì•„ì´í…œ ì •ë³´ë¥¼ ì œê±°í•˜ëŠ” ë¡œì§(í˜„ì¬ ì¥ë¹„ì¤‘ì¸ ê²½ìš° EquipManagerì—ì„œ ì œê±°)
 	UDLItemInstance* RemoveEquipment(EEquipmentSlotType EquipmentSlotType, int32 ItemCount);
 
 	ADLPlayerCharacter* GetCharacter() const;

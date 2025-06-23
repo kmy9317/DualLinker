@@ -25,7 +25,7 @@ void UDLExperienceSubsystem::LoadExperience(TSoftObjectPtr<UDLExperienceDefiniti
     {
         FStreamableManager& Streamable = AssetManager->GetStreamableManager();
 
-        // ±âÁ¸ ¿¡¼ÂÀ» ¾ğ·Îµå
+        // ê¸°ì¡´ ì—ì…‹ì„ ì–¸ë¡œë“œ
         UnloadPreviousExperienceAssets();
         PreviouslyLoadedAssets.Empty();
 
@@ -54,14 +54,14 @@ void UDLExperienceSubsystem::LoadExperience(TSoftObjectPtr<UDLExperienceDefiniti
                     if (WeakThis.IsValid())
                     {
                         UDLExperienceSubsystem* Subsystem = WeakThis.Get();
-                        // Experience ·Îµå ¿Ï·á ÀÌº¥Æ® È£Ãâ
+                        // Experience ë¡œë“œ ì™„ë£Œ ì´ë²¤íŠ¸ í˜¸ì¶œ
                         Subsystem->OnAssetLoaded();
                     }
                 });
         }
         else
         {
-            // ·ÎµåÇÒ Ãß°¡ ¿¡¼ÂÀÌ ¾øÀ¸¸é Áï½Ã ¿Ï·á Ã³¸®
+            // ë¡œë“œí•  ì¶”ê°€ ì—ì…‹ì´ ì—†ìœ¼ë©´ ì¦‰ì‹œ ì™„ë£Œ ì²˜ë¦¬
             OnAssetLoaded();
         }
     }

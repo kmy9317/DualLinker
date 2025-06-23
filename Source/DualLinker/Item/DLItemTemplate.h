@@ -43,7 +43,7 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	int32 MaxStackCount = 1;
 
-	// Fragment¸¦ ÅëÇØ ´Ù¾çÇÑ Å¸ÀÔÀÇ ¾ÆÀÌÅÛ ¼Ó¼ºÀ» Á¶ÇÕ °¡´É
+	// Fragmentë¥¼ í†µí•´ ë‹¤ì–‘í•œ íƒ€ì…ì˜ ì•„ì´í…œ ì†ì„±ì„ ì¡°í•© ê°€ëŠ¥
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced)
 	TArray<TObjectPtr<UDLItemFragment>> Fragments;
 };

@@ -21,10 +21,10 @@ void UDLCharacterPartsManager_Hero::InitializeParts()
 		return;
 	}
 
-	// DLAssetManager ¿¡¼­ ±âº» ÆÄÃ÷ µ¥ÀÌÅÍ µ¿±â ·Îµå
+	// DLAssetManager ì—ì„œ ê¸°ë³¸ íŒŒì¸  ë°ì´í„° ë™ê¸° ë¡œë“œ
 	const UDLCharacterPartsData& PartsData = UDLAssetManager::Get().GetDefaultCharacterPartsData();
 
-	// ÇØ´ç Å¸ÀÔÀÇ FDLCharacterMeshPart ²¨³»¿È
+	// í•´ë‹¹ íƒ€ì…ì˜ FDLCharacterMeshPart êº¼ë‚´ì˜´
 	FDLCharacterMeshPart MeshPart;
 	if (!PartsData.GetMeshPartForCharacter(Type, MeshPart))
 	{

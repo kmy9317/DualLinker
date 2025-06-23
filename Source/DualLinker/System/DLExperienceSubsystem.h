@@ -24,10 +24,10 @@ public:
     virtual bool ShouldShowLoadingScreen() const override;
     //~End of ILoadingProcessInterface
 
-    /** µ¥ÀÌÅÍ ·Îµå ½ÃÀÛ (ÀÌÀü µ¥ÀÌÅÍÀÇ ¿¡¼ÂÀº ¾ğ·Îµå) */
+    /** ë°ì´í„° ë¡œë“œ ì‹œì‘ (ì´ì „ ë°ì´í„°ì˜ ì—ì…‹ì€ ì–¸ë¡œë“œ) */
     void LoadExperience(TSoftObjectPtr<UDLExperienceDefinition> NewExperienceDefinition);
 
-    // ¾Æ·¡ÀÇ OnExperienceLoaded¿¡ ¹ÙÀÎµùÇÏ°Å³ª, ÀÌ¹Ì Experience ·ÎµùÀÌ ¿Ï·áµÇ¾ú´Ù¸é ¹Ù·Î È£ÃâÇÔ
+    // ì•„ë˜ì˜ OnExperienceLoadedì— ë°”ì¸ë”©í•˜ê±°ë‚˜, ì´ë¯¸ Experience ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆë‹¤ë©´ ë°”ë¡œ í˜¸ì¶œí•¨
     void CallOrRegister_OnExperienceLoaded(FOnExperienceLoaded::FDelegate&& Delegate);
 
     bool IsExperienceLoaded() const;
@@ -37,11 +37,11 @@ public:
     FOnExperienceLoaded OnExperienceLoaded;
 
 private:
-    /** ÇöÀç ·Îµå ÁßÀÎ µ¥ÀÌÅÍ */
+    /** í˜„ì¬ ë¡œë“œ ì¤‘ì¸ ë°ì´í„° */
     UPROPERTY()
     TObjectPtr<const UDLExperienceDefinition> CurrentExperience = nullptr;
 
-    /** ÀÌÀü Experience¿¡¼­ »ç¿ëÇÑ ¿¡¼ÂµéÀ» ÃßÀûÇÏ¿© ºÒÇÊ¿äÇÑ °ÍµéÀ» ¾ğ·Îµå */
+    /** ì´ì „ Experienceì—ì„œ ì‚¬ìš©í•œ ì—ì…‹ë“¤ì„ ì¶”ì í•˜ì—¬ ë¶ˆí•„ìš”í•œ ê²ƒë“¤ì„ ì–¸ë¡œë“œ */
     TSet<FSoftObjectPath> PreviouslyLoadedAssets;
 
     void OnAssetLoaded();

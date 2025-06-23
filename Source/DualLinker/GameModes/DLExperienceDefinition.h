@@ -18,7 +18,7 @@ class DUALLINKER_API UDLExperienceDefinition : public UPrimaryDataAsset
 public:
 	UDLExperienceDefinition();
 
-	/** 맵에서 사용할 PawnData 리스트 */
+	/** ????? ????? PawnData ????? */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pawn")
 	TArray<TSoftObjectPtr<UDLPawnData>> PawnDataList;
 };

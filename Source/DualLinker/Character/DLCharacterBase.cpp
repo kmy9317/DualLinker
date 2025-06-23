@@ -46,7 +46,7 @@ void ADLCharacterBase::TakeDamage(float Damage)
     Health -= Damage;
     if (Health <= 0.0f)
     {
-        // »ç¸Á Ã³¸® (ÃßÈÄ ±¸Çö)
+        // ì‚¬ë§ ì²˜ë¦¬ (ì¶”í›„ êµ¬í˜„)
     }
 }
 
@@ -61,7 +61,7 @@ void ADLCharacterBase::Heal(float HealAmount)
 
 void ADLCharacterBase::Attack()
 {
-    // ±âº» °ø°Ý (ÃßÈÄ »ó¼Ó Å¬·¡½º¿¡¼­ ±¸Çö)
+    // ê¸°ë³¸ ê³µê²© (ì¶”í›„ ìƒì† í´ëž˜ìŠ¤ì—ì„œ êµ¬í˜„)
 }
 
 

@@ -13,7 +13,7 @@ class UDLAbilitySystemComponent;
 class UDLGameplayAbility;
 
 /**
- * Ability trigger를 위한 InputTag와 현재 Ability Level과 연관된 구조체
+ * Ability trigger?? ???? InputTag?? ???? Ability Level?? ?????? ?????
  */
 USTRUCT(BlueprintType)
 struct FDLAbilitySet_GameplayAbility
@@ -33,7 +33,7 @@ public:
 
 /**
  * FDLAbilitySet_GrantedHandles
- * AbilitySet에 저장된 Granted된 Ability들의 Handle을 
+ * AbilitySet?? ????? Granted?? Ability???? Handle?? 
  */
 USTRUCT(BlueprintType)
 struct FDLAbilitySet_GrantedHandles
@@ -41,15 +41,13 @@ struct FDLAbilitySet_GrantedHandles
 	GENERATED_BODY()
 
 public:
-
-	// AbilitySpecHandles 캐싱 함수
+	// AbilitySpecHandles 캐?? ???
 	void AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle);
 
-	// 부여된 Ability 제거 함수
+	// ?恝??? Ability ???? ???
 	void TakeFromAbilitySystem(UDLAbilitySystemComponent* DLASC);
 
 protected:
-
 	UPROPERTY()
 	TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;
 };
@@ -65,13 +63,16 @@ class DUALLINKER_API UDLAbilitySet : public UPrimaryDataAsset
 public:
 	UDLAbilitySet();
 
-	// ASC에 Ability 부여하는 함수, Handles에 부여된 Ability 저장하여 추후 제거에 사용
-	void GiveToAbilitySystem(UDLAbilitySystemComponent* DLASC, FDLAbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject = nullptr) const;
+	// ASC?? Ability ?恝???? ???, Handles?? ?恝??? Ability ??????? ???? ????? ???
+	void GiveToAbilitySystem(UDLAbilitySystemComponent* DLASC, FDLAbilitySet_GrantedHandles* OutGrantedHandles,
+	                         UObject* SourceObject = nullptr) const;
 
-	const TArray<FDLAbilitySet_GameplayAbility>& GetGrantedGameplayAbilities() const { return GrantedGameplayAbilities; }
+	const TArray<FDLAbilitySet_GameplayAbility>& GetGrantedGameplayAbilities() const
+	{
+		return GrantedGameplayAbilities;
+	}
 
 protected:
-
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Abilities", meta = (TitleProperty = Ability))
 	TArray<FDLAbilitySet_GameplayAbility> GrantedGameplayAbilities;
 };

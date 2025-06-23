@@ -25,23 +25,23 @@ public:
 	virtual void BeginPlay() override;
 
 protected:
-	/** ½ÇÁ¦ ÆÄÃ÷ ºÎÂø ÁøÇà ÃÊ±âÈ­ (¼­ºêÅ¬·¡½º¿¡¼­ override) */
+	/** ì‹¤ì œ íŒŒì¸  ë¶€ì°© ì§„í–‰ ì´ˆê¸°í™” (ì„œë¸Œí´ë˜ìŠ¤ì—ì„œ override) */
 	virtual void InitializeParts();
 
-	/** ÁÖ¾îÁø MeshPart ¸¦ BaseMesh ºÎÂø */
+	/** ì£¼ì–´ì§„ MeshPart ë¥¼ BaseMesh ë¶€ì°© */
 	void ApplyMeshPart(const FDLCharacterMeshPart& MeshPart, ECharacterType CharType);
 
-	/** Base ÀÇ SkeletalMeshComponent */
+	/** Base ì˜ SkeletalMeshComponent */
 	USkeletalMeshComponent* GetBaseMesh() const;
 
-	/** PartID(FName)·Î ºÎÇ° ÄÄÆ÷³ÍÆ®¸¦ Ã£¾Æ³»°Å³ª »õ·Î »ı¼º. */
+	/** PartID(FName)ë¡œ ë¶€í’ˆ ì»´í¬ë„ŒíŠ¸ë¥¼ ì°¾ì•„ë‚´ê±°ë‚˜ ìƒˆë¡œ ìƒì„±. */
 	USkeletalMeshComponent* GetOrCreateMeshComponent(FName PartID);
 
 protected:
 	ECharacterType OwnerCharacterType;
 
 private:
-	/** PartID ¡æ Sub?mesh ÄÄÆ÷³ÍÆ® ¸Ê */
+	/** PartID â†’ Sub?mesh ì»´í¬ë„ŒíŠ¸ ë§µ */
 	UPROPERTY()
 	TMap<FName, USkeletalMeshComponent*> MeshPartsMap;
 	

@@ -8,9 +8,9 @@ UTravelManager_TravelRequest* UDLUserFacingExperience::CreateTravelRequest() con
 {
 	const FString ExperienceName = ExperienceID.PrimaryAssetName.ToString();
 
-	// - UTravelManager_TravelRequest´Â UObject·Î »ı¼ºÇØ³õ°í, ¾Ë¾Æ¼­ GC°¡ µÈ´Ù:
-	// - ÇØ´ç °´Ã¼´Â ÇöÀç ÇÁ·¹ÀÓ¿¡¼­ »ç¿ëÇÏ±â ¶§¹®¿¡, GC¿¡ ´ëÇÑ ¿°·Á°¡ ÇÊ¿ä¾ø´Ù: ¸¸¾à ´ÙÀ½ ÇÁ·¹ÀÓÀÌµç Ãß°¡ÀûÀÎ ÇÁ·¹ÀÓ »ó¿¡¼­ ÇØ´ç °´Ã¼¸¦ »ç¿ëÇÒ °æ¿ì, Lifetime °ü¸® ÇÊ¿ä!
-	//   - ±×·¸Áö ¾ÊÀ¸¸é dangling ³­´Ù!
+	// - UTravelManager_TravelRequestëŠ” UObjectë¡œ ìƒì„±í•´ë†“ê³ , ì•Œì•„ì„œ GCê°€ ëœë‹¤:
+	// - í•´ë‹¹ ê°ì²´ëŠ” í˜„ì¬ í”„ë ˆì„ì—ì„œ ì‚¬ìš©í•˜ê¸° ë•Œë¬¸ì—, GCì— ëŒ€í•œ ì—¼ë ¤ê°€ í•„ìš”ì—†ë‹¤: ë§Œì•½ ë‹¤ìŒ í”„ë ˆì„ì´ë“  ì¶”ê°€ì ì¸ í”„ë ˆì„ ìƒì—ì„œ í•´ë‹¹ ê°ì²´ë¥¼ ì‚¬ìš©í•  ê²½ìš°, Lifetime ê´€ë¦¬ í•„ìš”!
+	//   - ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ dangling ë‚œë‹¤!
 	UTravelManager_TravelRequest* Result = NewObject<UTravelManager_TravelRequest>();
 	Result->MapID = MapID;
 	Result->ExtraArgs.Add(TEXT("Experience"), ExperienceName);

@@ -18,21 +18,21 @@ class DUALLINKER_API UDLInputMappingSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 public:
-    /** ÀÔ·Â ¸ÅÇÎ ¼­ºê½Ã½ºÅÛ ÃÊ±âÈ­ */
+    /** ì…ë ¥ ë§¤í•‘ ì„œë¸Œì‹œìŠ¤í…œ ì´ˆê¸°í™” */
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
-    /** ±âº» ÀÔ·Â ¸ÅÇÎÀ» Àû¿ë */
+    /** ê¸°ë³¸ ì…ë ¥ ë§¤í•‘ì„ ì ìš© */
     void ApplyDefaultInputMapping(APlayerController* PlayerController);
 
-    /** ÇöÀç ±âº» ÀÔ·Â ¸ÅÇÎÀ» ¹İÈ¯ */
+    /** í˜„ì¬ ê¸°ë³¸ ì…ë ¥ ë§¤í•‘ì„ ë°˜í™˜ */
     UInputMappingContext* GetDefaultInputMappingContext() const;
 
-    /** Default Input Mapping ·Îµå ¿Ï·á ½Ã È£ÃâµÇ´Â µ¨¸®°ÔÀÌÆ® */
+    /** Default Input Mapping ë¡œë“œ ì™„ë£Œ ì‹œ í˜¸ì¶œë˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸ */
     UPROPERTY(BlueprintAssignable, Category = "Input")
     FOnDefaultInputMappingLoaded OnDefaultInputMappingLoaded;
 
 private:
-    /** ±âº»ÀûÀ¸·Î »ç¿ëÇÒ ÀÔ·Â ¸ÅÇÎ */
+    /** ê¸°ë³¸ì ìœ¼ë¡œ ì‚¬ìš©í•  ì…ë ¥ ë§¤í•‘ */
 
     UPROPERTY(Config)
     FSoftObjectPath DefaultInputMappingPath;

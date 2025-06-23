@@ -21,5 +21,5 @@ protected:
     virtual void BeginPlay() override;
 
 public:
-    void HeavyAttack();  // ´ë°Ë °­°ø°Ý
+    void HeavyAttack();  // ëŒ€ê²€ ê°•ê³µê²©
 };

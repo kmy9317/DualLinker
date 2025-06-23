@@ -23,8 +23,8 @@ public:
 	template <class UserClass, typename FuncType>
 	void BindNativeAction(const UDLInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func, bool bLogIfNotFound);
 
-	template <class UserClass, typename PressedFuncType, typename ReleasedFuncType>
-	void BindAbilityActions(const UDLInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles);
+	template <class UserClass, typename StartedFuncType, typename PressedFuncType, typename ReleasedFuncType>
+	void BindAbilityActions(const UDLInputConfig* InputConfig, UserClass* Object, StartedFuncType StartedFunc, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles);
 };
 
 template <class UserClass, typename FuncType>
@@ -32,25 +32,30 @@ void UDLInputComponent::BindNativeAction(const UDLInputConfig* InputConfig, cons
 {
 	check(InputConfig);
 
-	// ¿©±â¼­ ¾Ë ¼ö ÀÖµíÀÌ, InputConfig´Â È°¼ºÈ­ °¡´ÉÇÑ InputActionÀ» ´ã°í ÀÖ´Ù.
-	// - ¸¸¾à InputConfig¿¡ ¾ø´Â InputActionÀ» Binding½ÃÅ°¸é, nullptrÀ» ¹İÈ¯ÇÏ¿©, ¹ÙÀÎµùÇÏ´Âµ¥ ½ÇÆĞÇÑ´Ù
+	// ì—¬ê¸°ì„œ ì•Œ ìˆ˜ ìˆë“¯ì´, InputConfigëŠ” í™œì„±í™” ê°€ëŠ¥í•œ InputActionì„ ë‹´ê³  ìˆë‹¤.
+	// - ë§Œì•½ InputConfigì— ì—†ëŠ” InputActionì„ Bindingì‹œí‚¤ë©´, nullptrì„ ë°˜í™˜í•˜ì—¬, ë°”ì¸ë”©í•˜ëŠ”ë° ì‹¤íŒ¨í•œë‹¤
 	if (const UInputAction* IA = InputConfig->FindNativeInputActionForTag(InputTag, bLogIfNotFound))
 	{
 		BindAction(IA, TriggerEvent, Object, Func);
 	}
 }
 
-template <class UserClass, typename PressedFuncType, typename ReleasedFuncType>
-void UDLInputComponent::BindAbilityActions(const UDLInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles)
+template <class UserClass, typename StartedFuncType, typename PressedFuncType, typename ReleasedFuncType>
+void UDLInputComponent::BindAbilityActions(const UDLInputConfig* InputConfig, UserClass* Object, StartedFuncType StartedFunc, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles)
 {
 	check(InputConfig);
 
-	// AbilityAction¿¡ ´ëÇØ¼­´Â ±×³É ¸ğµç InputAction¿¡ ´Ù ¹ÙÀÎµù ½ÃÅ²´Ù!
+	// AbilityActionì— ëŒ€í•´ì„œëŠ” ê·¸ëƒ¥ ëª¨ë“  InputActionì— ë‹¤ ë°”ì¸ë”© ì‹œí‚¨ë‹¤!
 	for (const FDLInputAction& Action : InputConfig->AbilityInputActions)
 	{
 		if (Action.InputAction && Action.InputTag.IsValid())
 		{
-			// Func ÀÌÈÄÀÇ ÀÎÀÚµéÀº FuncÀÇ ¸Å°³º¯¼ö¿¡ ÇÒ´çµÊ.
+			// Func ì´í›„ì˜ ì¸ìë“¤ì€ Funcì˜ ë§¤ê°œë³€ìˆ˜ì— í• ë‹¹ë¨.
+			if (StartedFunc)
+			{
+				BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Started, Object, StartedFunc, Action.InputTag).GetHandle());
+			}
+
 			if (PressedFunc)
 			{
 				BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, PressedFunc, Action.InputTag).GetHandle());

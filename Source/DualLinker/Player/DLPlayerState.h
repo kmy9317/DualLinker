@@ -31,7 +31,7 @@ public:
 	void ApplyAbilitySets(const TArray<UDLAbilitySet*>& AbilitySets);
 	UDLAbilitySystemComponent* GetDLAbilitySystemComponent() const { return AbilitySystemComponent; }
 
-	// TEMP -> µğÆúÆ®¸¦ count·Î º¯°æ ÈÄ ´Ù¸¥ À§Ä¡¿¡¼­ °ª ÃÊ±âÈ­ ÇÏµµ·Ï ÇÔ
+	// TEMP -> ë””í´íŠ¸ë¥¼ countë¡œ ë³€ê²½ í›„ ë‹¤ë¥¸ ìœ„ì¹˜ì—ì„œ ê°’ ì´ˆê¸°í™” í•˜ë„ë¡ í•¨
 	ECharacterType CurrentCharacterType = ECharacterType::Edel;
 
 	UPROPERTY()

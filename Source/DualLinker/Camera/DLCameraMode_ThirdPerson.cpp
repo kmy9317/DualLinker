@@ -38,8 +38,8 @@ void UDLCameraMode_ThirdPerson::UpdateView(float DeltaTime)
 	View.ControlRotation = View.Rotation;
 	View.FieldOfView = FieldOfView;
 
-	// TargetOffsetCurve°¡ Á¸Àç½Ã Curve¿¡ °ªÀ» °¡Á®¿Í¼­ Àû¿ë ÁøÇà
-	// - Camera °üÁ¡¿¡¼­ CharaterÀÇ ¾î´À ºÎºĞÀ» TargetÀ¸·Î ÇÒÁö °áÁ¤
+	// TargetOffsetCurveê°€ ì¡´ì¬ì‹œ Curveì— ê°’ì„ ê°€ì ¸ì™€ì„œ ì ìš© ì§„í–‰
+	// - Camera ê´€ì ì—ì„œ Charaterì˜ ì–´ëŠ ë¶€ë¶„ì„ Targetìœ¼ë¡œ í• ì§€ ê²°ì •
 	if (TargetOffsetCurve)
 	{
 		const FVector TargetOffset = TargetOffsetCurve->GetVectorValue(PivotRotation.Pitch);
@@ -63,7 +63,7 @@ void UDLCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 	IDLCameraAssistInterface* TargetControllerAssist = Cast<IDLCameraAssistInterface>(TargetController);
 	IDLCameraAssistInterface* TargetActorAssist = Cast<IDLCameraAssistInterface>(TargetActor);
 
-	// TODO: Ä³¸¯ÅÍÀÇ Æ¯Á¤ ºÎÀ§³ª ´Ù¸¥ TargetµéÀ» PreventPenetrationTarget·Î ÁöÁ¤ÇÒ ¼ö ÀÖ´Ù
+	// TODO: ìºë¦­í„°ì˜ íŠ¹ì • ë¶€ìœ„ë‚˜ ë‹¤ë¥¸ Targetë“¤ì„ PreventPenetrationTargetë¡œ ì§€ì •í•  ìˆ˜ ìˆë‹¤
 	TOptional<AActor*> OptionalPPTarget = TargetActorAssist ? TargetActorAssist->GetCameraPreventPenetrationTarget() : TOptional<AActor*>();
 	AActor* PPActor = OptionalPPTarget.IsSet() ? OptionalPPTarget.GetValue() : TargetActor;
 	IDLCameraAssistInterface* PPActorAssist = OptionalPPTarget.IsSet() ? Cast<IDLCameraAssistInterface>(PPActor) : nullptr;
@@ -71,45 +71,45 @@ void UDLCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 	const UPrimitiveComponent* PPActorRootComponent = Cast<UPrimitiveComponent>(PPActor->GetRootComponent());
 	if (PPActorRootComponent)
 	{
-		// SafeLocation °è»ê ½ÃÀÛ:
-		// 1) ±âº»ÀûÀ¸·Î PPActorÀÇ ActorLocationÀ» »ç¿ë.
+		// SafeLocation ê³„ì‚° ì‹œì‘:
+		// 1) ê¸°ë³¸ì ìœ¼ë¡œ PPActorì˜ ActorLocationì„ ì‚¬ìš©.
 		FVector SafeLocation = PPActor->GetActorLocation();
 		FVector ClosestPointOnLineToCapsuleCenter;
 
-		// 2) View.Rotation.Vector()¿Í View.Location(Ä«¸Ş¶ó À§Ä¡)¸¦ ±âÁØÀ¸·Î,
-		//    PPActorÀÇ Áß½É¿¡¼­ °¡Àå °¡±î¿î Á¡(Ä¸½¶ Áß½É¿¡ °¡±î¿î ÁöÁ¡)À» ±¸ÇÔ.
+		// 2) View.Rotation.Vector()ì™€ View.Location(ì¹´ë©”ë¼ ìœ„ì¹˜)ë¥¼ ê¸°ì¤€ìœ¼ë¡œ,
+		//    PPActorì˜ ì¤‘ì‹¬ì—ì„œ ê°€ì¥ ê°€ê¹Œìš´ ì (ìº¡ìŠ ì¤‘ì‹¬ì— ê°€ê¹Œìš´ ì§€ì )ì„ êµ¬í•¨.
 		FMath::PointDistToLine(SafeLocation, View.Rotation.Vector(), View.Location, ClosestPointOnLineToCapsuleCenter);
 
-		// 3) PushInDistance °è»ê: 
-		// PenetrationAvoidanceFeelers[0].Extent¿Í CollisionPushOutDistance¸¦ ´õÇÑ °ª
+		// 3) PushInDistance ê³„ì‚°: 
+		// PenetrationAvoidanceFeelers[0].Extentì™€ CollisionPushOutDistanceë¥¼ ë”í•œ ê°’
 		float const PushInDistance = PenetrationAvoidanceFeelers[0].Extent + CollisionPushOutDistance;
 
-		// 4) PPActorÀÇ Ä¸½¶ ±âº» ³ôÀÌ(Àı¹İ)¿¡¼­ PushInDistance¸¦ »« °ªÀ» MaxHalfHeight·Î »ç¿ë.
+		// 4) PPActorì˜ ìº¡ìŠ ê¸°ë³¸ ë†’ì´(ì ˆë°˜)ì—ì„œ PushInDistanceë¥¼ ëº€ ê°’ì„ MaxHalfHeightë¡œ ì‚¬ìš©.
 		float const MaxHalfHeight = PPActor->GetSimpleCollisionHalfHeight() - PushInDistance;
 
-		// 5) ZÃà º¸Á¤: SafeLocation.Z¸¦, ClosestPointOnLineToCapsuleCenter.Z¸¦ Áß½ÉÀ¸·Î, 
-		//    SafeLocation.ZÀÇ »ó/ÇÏ ¹üÀ§(MaxHalfHeight)¸¦ »ç¿ëÇØ Clamp.
+		// 5) Zì¶• ë³´ì •: SafeLocation.Zë¥¼, ClosestPointOnLineToCapsuleCenter.Zë¥¼ ì¤‘ì‹¬ìœ¼ë¡œ, 
+		//    SafeLocation.Zì˜ ìƒ/í•˜ ë²”ìœ„(MaxHalfHeight)ë¥¼ ì‚¬ìš©í•´ Clamp.
 		SafeLocation.Z = FMath::Clamp(ClosestPointOnLineToCapsuleCenter.Z, SafeLocation.Z - MaxHalfHeight, SafeLocation.Z + MaxHalfHeight);
 
-		// 6) Ãæµ¹ °¨Áö¸¦ À§ÇÑ SquaredDistance °è»ê:
-		// PPActorRootComponent->GetSquaredDistanceToCollision()¸¦ È£ÃâÇÏ¿©, 
-		// ClosestPointOnLineToCapsuleCenter°ú ÄÄÆ÷³ÍÆ®ÀÇ Ãæµ¹ Shape °£ÀÇ °¡Àå °¡±î¿î °Å¸®¿Í Ç¥¸é À§Ä¡¸¦ °è»ê
+		// 6) ì¶©ëŒ ê°ì§€ë¥¼ ìœ„í•œ SquaredDistance ê³„ì‚°:
+		// PPActorRootComponent->GetSquaredDistanceToCollision()ë¥¼ í˜¸ì¶œí•˜ì—¬, 
+		// ClosestPointOnLineToCapsuleCenterê³¼ ì»´í¬ë„ŒíŠ¸ì˜ ì¶©ëŒ Shape ê°„ì˜ ê°€ì¥ ê°€ê¹Œìš´ ê±°ë¦¬ì™€ í‘œë©´ ìœ„ì¹˜ë¥¼ ê³„ì‚°
 		float DistanceSqr;
 		PPActorRootComponent->GetSquaredDistanceToCollision(ClosestPointOnLineToCapsuleCenter, DistanceSqr, SafeLocation);
 
-		// 7) ¸¸¾à PenetrationAvoidanceFeelers ¹è¿­¿¡ Ç×¸ñÀÌ ÀÖ´Ù¸é,
-		//    SafeLocation¸¦ (SafeLocation - ClosestPointOnLineToCapsuleCenter)ÀÇ ¹æÇâÀ¸·Î
-		//    PushInDistance¸¸Å­ ¹Ğ¾î ³Ö¾î Ä«¸Ş¶ó°¡ Ãæµ¹µÇ±â Àü¿¡ ¾ÈÀüÇÏ°Ô À¯ÁöµÇµµ·Ï Á¶Á¤.
+		// 7) ë§Œì•½ PenetrationAvoidanceFeelers ë°°ì—´ì— í•­ëª©ì´ ìˆë‹¤ë©´,
+		//    SafeLocationë¥¼ (SafeLocation - ClosestPointOnLineToCapsuleCenter)ì˜ ë°©í–¥ìœ¼ë¡œ
+		//    PushInDistanceë§Œí¼ ë°€ì–´ ë„£ì–´ ì¹´ë©”ë¼ê°€ ì¶©ëŒë˜ê¸° ì „ì— ì•ˆì „í•˜ê²Œ ìœ ì§€ë˜ë„ë¡ ì¡°ì •.
 		if (PenetrationAvoidanceFeelers.Num() > 0)
 		{
 			SafeLocation += (SafeLocation - ClosestPointOnLineToCapsuleCenter).GetSafeNormal() * PushInDistance;
 		}
 
-		// ÀÌÈÄ, SafeLocationÀ» ±âÁØÀ¸·Î ½ÇÁ¦ Ä«¸Ş¶ó À§Ä¡¿ÍÀÇ Ãæµ¹ ¿©ºÎ¸¦ Ã¼Å©ÇÏ°í Ä«¸Ş¶ó À§Ä¡ º¸Á¤
+		// ì´í›„, SafeLocationì„ ê¸°ì¤€ìœ¼ë¡œ ì‹¤ì œ ì¹´ë©”ë¼ ìœ„ì¹˜ì™€ì˜ ì¶©ëŒ ì—¬ë¶€ë¥¼ ì²´í¬í•˜ê³  ì¹´ë©”ë¼ ìœ„ì¹˜ ë³´ì •
 		bool const bSingleRayPenetrationCheck = !bDoPredictiveAvoidance;
 		PreventCameraPenetration(*PPActor, SafeLocation, View.Location, DeltaTime, AimLineToDesiredPosBlockedPct, bSingleRayPenetrationCheck);
 
-		// ¿©·¯ Assist °´Ã¼¸¦ ÅëÇØ Ä«¸Ş¶ó °üÅë °æ°í¸¦ º¸³¾ ¼ö ÀÖÀ½.
+		// ì—¬ëŸ¬ Assist ê°ì²´ë¥¼ í†µí•´ ì¹´ë©”ë¼ ê´€í†µ ê²½ê³ ë¥¼ ë³´ë‚¼ ìˆ˜ ìˆìŒ.
 		IDLCameraAssistInterface* AssistArray[] = { TargetControllerAssist, TargetActorAssist, PPActorAssist };
 
 		if (AimLineToDesiredPosBlockedPct < ReportPenetrationPercent)
@@ -127,9 +127,9 @@ void UDLCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 
 void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarget, FVector const& SafeLoc, FVector& CameraLoc, float const& DeltaTime, float& DistBlockedPct, bool bSingleRayOnly)
 {
-	// ¸ŞÀÎ feeler Â÷´Ü ºñÀ²
+	// ë©”ì¸ feeler ì°¨ë‹¨ ë¹„ìœ¨
 	float HardBlockedPct = DistBlockedPct;
-	// ÁÖº¯ feelerµéÀÇ Æò±ÕÀû Â÷´Ü ºñÀ²
+	// ì£¼ë³€ feelerë“¤ì˜ í‰ê· ì  ì°¨ë‹¨ ë¹„ìœ¨
 	float SoftBlockedPct = DistBlockedPct;
 
 	FVector BaseRay = CameraLoc - SafeLoc;
@@ -145,7 +145,7 @@ void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarge
 
 	SphereParams.AddIgnoredActor(&ViewTarget);
 
-	//TODO Ä«¸Ş¶ó Penetration °ü·Ã ignoreÇÒ ¿¢ÅÍµé ¼±º° ±â´É
+	//TODO ì¹´ë©”ë¼ Penetration ê´€ë ¨ ignoreí•  ì—‘í„°ë“¤ ì„ ë³„ ê¸°ëŠ¥
 	// IDLCameraTarget.GetIgnoredActorsForCameraPentration();
 	//if (IgnoreActorForCameraPenetration)
 	//{
@@ -174,7 +174,7 @@ void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarge
 			// do multi-line check to make sure the hits we throw out aren't
 			// masking real hits behind (these are important rays).
 
-			// TODO: ÃßÈÄ IgnoreActor¿Í ±× µÚ Ãæµ¹ Actorµî¿¡ ´ëÇÑ »óÈ²À¸·Î ÀÎÇØ SweepMultiByChannel() »ç¿ë °í·Á
+			// TODO: ì¶”í›„ IgnoreActorì™€ ê·¸ ë’¤ ì¶©ëŒ Actorë“±ì— ëŒ€í•œ ìƒí™©ìœ¼ë¡œ ì¸í•´ SweepMultiByChannel() ì‚¬ìš© ê³ ë ¤
 			FHitResult Hit;
 			const bool bHit = World->SweepSingleByChannel(Hit, SafeLoc, RayTarget, FQuat::Identity, TraceChannel, SphereShape, SphereParams);
 
@@ -186,17 +186,17 @@ void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarge
 			{
 				bool bIgnoreHit = false;
 
-				// ¿¢ÅÍ¿¡ IgnoreCameraCollision ÅÂ±× ÀÖÀ¸¸é ignore·Î µî·Ï
+				// ì—‘í„°ì— IgnoreCameraCollision íƒœê·¸ ìˆìœ¼ë©´ ignoreë¡œ ë“±ë¡
 				if (HitActor->ActorHasTag(DLCameraMode_ThirdPerson_Statics::NAME_IgnoreCameraCollision))
 				{
 					bIgnoreHit = true;
 					SphereParams.AddIgnoredActor(HitActor);
 				}
 
-				// CameraBlockingVolumeÀÎ °æ¿ì º°µµ Ã³¸®ÇÏ¿©, Ä«¸Ş¶óÀÇ Àü¹æ¿¡¼­ ¹ß»ıÇÏ´Â Ãæµ¹Àº ¹«½Ã
+				// CameraBlockingVolumeì¸ ê²½ìš° ë³„ë„ ì²˜ë¦¬í•˜ì—¬, ì¹´ë©”ë¼ì˜ ì „ë°©ì—ì„œ ë°œìƒí•˜ëŠ” ì¶©ëŒì€ ë¬´ì‹œ
 				if (!bIgnoreHit && HitActor->IsA<ACameraBlockingVolume>())
 				{
-					// ViewTarget ±âÁØ Àü¹æ È®ÀÎ
+					// ViewTarget ê¸°ì¤€ ì „ë°© í™•ì¸
 					const FVector ViewTargetForwardXY = ViewTarget.GetActorForwardVector().GetSafeNormal2D();
 					const FVector ViewTargetLocation = ViewTarget.GetActorLocation();
 					const FVector HitOffset = Hit.Location - ViewTargetLocation;
@@ -212,29 +212,29 @@ void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarge
 
 				if (!bIgnoreHit)
 				{
-					// Weight Àû¿ë: PawnÀÎÁö WorldÀÎÁö¿¡ µû¶ó °¡ÁßÄ¡ ´Ù¸£°Ô Àû¿ë
+					// Weight ì ìš©: Pawnì¸ì§€ Worldì¸ì§€ì— ë”°ë¼ ê°€ì¤‘ì¹˜ ë‹¤ë¥´ê²Œ ì ìš©
 					float const Weight = Cast<APawn>(Hit.GetActor()) ? Feeler.PawnWeight : Feeler.WorldWeight;
 					float NewBlockPct = Hit.Time;
-					// Hit.Time (Ãæµ¹½Ã ¹ß»ıÇÑ Ãæµ¹ ºñÀ²)°ú °¡ÁßÄ¡¸¦ È¥ÇÕÇØ »õ·Î¿î Â÷´Ü ºñÀ² °è»ê
+					// Hit.Time (ì¶©ëŒì‹œ ë°œìƒí•œ ì¶©ëŒ ë¹„ìœ¨)ê³¼ ê°€ì¤‘ì¹˜ë¥¼ í˜¼í•©í•´ ìƒˆë¡œìš´ ì°¨ë‹¨ ë¹„ìœ¨ ê³„ì‚°
 					NewBlockPct += (1.f - NewBlockPct) * (1.f - Weight);
 
-					// ½ÇÁ¦ PushOut Ã³¸®¸¦ °í·ÁÇÏ¿©, SafeLoc·ÎºÎÅÍ Hit.Location »çÀÌÀÇ ºñÀ² °è»ê
+					// ì‹¤ì œ PushOut ì²˜ë¦¬ë¥¼ ê³ ë ¤í•˜ì—¬, SafeLocë¡œë¶€í„° Hit.Location ì‚¬ì´ì˜ ë¹„ìœ¨ ê³„ì‚°
 					NewBlockPct = ((Hit.Location - SafeLoc).Size() - CollisionPushOutDistance) / (RayTarget - SafeLoc).Size();
 					DistBlockedPctThisFrame = FMath::Min(NewBlockPct, DistBlockedPctThisFrame);
 
-					// ÀÌ¹ø feeler¿¡¼­´Â È÷Æ®°¡ ¹ß»ıÇßÀ¸¹Ç·Î, ´ÙÀ½ ÇÁ·¹ÀÓ¿¡ ¶Ç Æ®·¹ÀÌ½ºÇÏµµ·Ï ¼³Á¤
+					// ì´ë²ˆ feelerì—ì„œëŠ” íˆíŠ¸ê°€ ë°œìƒí–ˆìœ¼ë¯€ë¡œ, ë‹¤ìŒ í”„ë ˆì„ì— ë˜ íŠ¸ë ˆì´ìŠ¤í•˜ë„ë¡ ì„¤ì •
 					Feeler.FramesUntilNextTrace = 0;
 				}
 			}
 
 			if (RayIdx == 0)
 			{
-				// Áß¾ÓÀÇ feeler (°¡Àå Áß¿äÇÑ Ray)´Â Â÷´Ü ºñÀ²À» ±×´ë·Î »ç¿ë
+				// ì¤‘ì•™ì˜ feeler (ê°€ì¥ ì¤‘ìš”í•œ Ray)ëŠ” ì°¨ë‹¨ ë¹„ìœ¨ì„ ê·¸ëŒ€ë¡œ ì‚¬ìš©
 				HardBlockedPct = DistBlockedPctThisFrame;
 			}
 			else
 			{
-				// ³ª¸ÓÁö feeler´Â º¸Á¶Àû ¿ªÇÒ - ¼ÒÇÁÆ®ÇÏ°Ô ºñÀ² Àû¿ë
+				// ë‚˜ë¨¸ì§€ feelerëŠ” ë³´ì¡°ì  ì—­í•  - ì†Œí”„íŠ¸í•˜ê²Œ ë¹„ìœ¨ ì ìš©
 				SoftBlockedPct = DistBlockedPctThisFrame;
 			}
 		}
@@ -250,7 +250,7 @@ void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarge
 	}
 	else if (DistBlockedPct < DistBlockedPctThisFrame)
 	{
-		// ºÎµå·´°Ô Áõ°¡(Out) ½ÃÅ²´Ù.
+		// ë¶€ë“œëŸ½ê²Œ ì¦ê°€(Out) ì‹œí‚¨ë‹¤.
 		if (PenetrationBlendOutTime > DeltaTime)
 		{
 			DistBlockedPct = DistBlockedPct + DeltaTime / PenetrationBlendOutTime * (DistBlockedPctThisFrame - DistBlockedPct);
@@ -268,7 +268,7 @@ void UDLCameraMode_ThirdPerson::PreventCameraPenetration(AActor const& ViewTarge
 		}
 		else if (DistBlockedPct > SoftBlockedPct)
 		{
-			// ºÎµå·´°Ô °¨¼Ò(In) ½ÃÅ²´Ù.
+			// ë¶€ë“œëŸ½ê²Œ ê°ì†Œ(In) ì‹œí‚¨ë‹¤.
 			if (PenetrationBlendInTime > DeltaTime)
 			{
 				DistBlockedPct = DistBlockedPct - DeltaTime / PenetrationBlendInTime * (DistBlockedPct - SoftBlockedPct);

@@ -6,10 +6,13 @@
 #include "DualLinker/GameModes/DLGameModeBase.h"
 #include "DualLinker/AbilitySystem/DLAbilitySystemComponent.h"
 #include "DualLinker/AbilitySystem/DLAbilitySet.h"
+#include "DualLinker/AbilitySystem/AttributeSets/DLVitalSet.h"
 
 ADLPlayerState::ADLPlayerState()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UDLAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+
+	CreateDefaultSubobject<UDLVitalSet>(TEXT("VitalSet"));
 }
 
 void ADLPlayerState::PostInitializeComponents()
@@ -47,7 +50,7 @@ void ADLPlayerState::ApplyAbilitySets(const TArray<UDLAbilitySet*>& AbilitySets)
 		{
 			if (IsValid(Set))
 			{
-				// OutHandles°¡ ÇÊ¿äÇÏ¸é µÎ ¹øÂ° ÀÎÀÚ·Î Àü´Þ
+				// OutHandlesê°€ í•„ìš”í•˜ë©´ ë‘ ë²ˆì§¸ ì¸ìžë¡œ ì „ë‹¬
 				Set->GiveToAbilitySystem(ASC, /*OutGrantedHandles*/ nullptr);
 			}
 		}

@@ -34,7 +34,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Meta = (TitleProperty = "InputAction"))
 	TArray<FDLInputAction> NativeInputActions;
 
-	// ÃßÈÄ ¾îºô¸®Æ¼ °³¹ß½Ã »ç¿ë
+	// ì¶”í›„ ì–´ë¹Œë¦¬í‹° ê°œë°œì‹œ ì‚¬ìš©
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Meta = (TitleProperty = "InputAction"))
 	TArray<FDLInputAction> AbilityInputActions;
 };

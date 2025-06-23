@@ -30,8 +30,8 @@ void FDLCameraModeView::Blend(const FDLCameraModeView& Other, float OtherWeight)
 	// Location + OtherWeight * (Other.Location - Location);
 	Location = FMath::Lerp(Location, Other.Location, OtherWeight);
 
-	// Location°ú °°Àº ¹æ½Ä Lerp (ControlRotation°ú FieldOfViewµµ °°À½)
-	// GetNormalized()¸¦ »ç¿ëÇÏ¿© °¢µµ¸¦ -!80 ~ 180À¸·Î À¯Áö(ÃÖ¼ÒÀÇ È¸Àü º¸Àå)
+	// Locationê³¼ ê°™ì€ ë°©ì‹ Lerp (ControlRotationê³¼ FieldOfViewë„ ê°™ìŒ)
+	// GetNormalized()ë¥¼ ì‚¬ìš©í•˜ì—¬ ê°ë„ë¥¼ -!80 ~ 180ìœ¼ë¡œ ìœ ì§€(ìµœì†Œì˜ íšŒì „ ë³´ì¥)
 	const FRotator DeltaRotation = (Other.Rotation - Rotation).GetNormalized();
 	Rotation = Rotation + (OtherWeight * DeltaRotation);
 
@@ -56,31 +56,31 @@ UDLCameraMode::UDLCameraMode()
 
 void UDLCameraMode::UpdateCameraMode(float DeltaTime)
 {
-	// Actor¸¦ È°¿ëÇÏ¿©, CameraMode PivotÀÇ Location ¹× RotationÀ» °è»êÇÏ¿© View¸¦ ¾÷µ¥ÀÌÆ®
+	// Actorë¥¼ í™œìš©í•˜ì—¬, CameraMode Pivotì˜ Location ë° Rotationì„ ê³„ì‚°í•˜ì—¬ Viewë¥¼ ì—…ë°ì´íŠ¸
 	UpdateView(DeltaTime);
 
-	// BlendWeight¸¦ DeltaTimeÀ» È°¿ëÇÏ¿©, BlendAlpha °è»ê ÈÄ, BlendFunction¿¡ ¸Â°Ô Àç-¸ÅÇÎÇÏ¿© ÃÖÁ¾ °è»ê
+	// BlendWeightë¥¼ DeltaTimeì„ í™œìš©í•˜ì—¬, BlendAlpha ê³„ì‚° í›„, BlendFunctionì— ë§ê²Œ ì¬-ë§¤í•‘í•˜ì—¬ ìµœì¢… ê³„ì‚°
 	UpdateBlending(DeltaTime);
 }
 
 void UDLCameraMode::UpdateView(float DeltaTime)
 {
-	// CameraMode¸¦ °¡Áö°í ÀÖ´Â CameraComponentÀÇ OwnerÀÎ CharacterÀ» È°¿ëÇÏ¿©, PivotLocation/RotationÀ» ¹İÈ¯ÇÔ
+	// CameraModeë¥¼ ê°€ì§€ê³  ìˆëŠ” CameraComponentì˜ Ownerì¸ Characterì„ í™œìš©í•˜ì—¬, PivotLocation/Rotationì„ ë°˜í™˜í•¨
 	FVector PivotLocation = GetPivotLocation();
 	FRotator PivotRotation = GetPivotRotation();
 
-	// Pitch °ª¿¡ ´ëÇØ Min/Max¸¦ Clamp½ÃÅ´
+	// Pitch ê°’ì— ëŒ€í•´ Min/Maxë¥¼ Clampì‹œí‚´
 	PivotRotation.Pitch = FMath::ClampAngle(PivotRotation.Pitch, ViewPitchMin, ViewPitchMax);
 
-	// FDLCameraModeView¿¡ PivotLocation/Rotation ¼³Á¤
+	// FDLCameraModeViewì— PivotLocation/Rotation ì„¤ì •
 	View.Location = PivotLocation;
 	View.Rotation = PivotRotation;
 
-	// PivotRotationÀ» ¶È°°ÀÌ ControlRotationÀ¸·Î È°¿ë
+	// PivotRotationì„ ë˜‘ê°™ì´ ControlRotationìœ¼ë¡œ í™œìš©
 	View.ControlRotation = View.Rotation;
 	View.FieldOfView = FieldOfView;
 
-	// Áï CharacterÀÇ Location°ú ControlRotationÀ» È°¿ëÇÏ¿©, View¸¦ ¾÷µ¥ÀÌÆ®
+	// ì¦‰ Characterì˜ Locationê³¼ ControlRotationì„ í™œìš©í•˜ì—¬, Viewë¥¼ ì—…ë°ì´íŠ¸
 }
 
 void UDLCameraMode::SetBlendWeight(float Weight)
@@ -154,7 +154,7 @@ void UDLCameraMode::UpdateBlending(float DeltaTime)
 UDLCameraComponent* UDLCameraMode::GetDLCameraComponent() const
 {
 	// - GetOuter(): DLCameraComponent -> DLCameraModeStack
-	// - GetOuter(): DLCameraComponent -> DLCameraMode(GetCameraModeInstance¿¡¼­ DLCameraModeStackÀÇ Outer¸¦ DLCameraModeÀÇ Outer·Î ÁöÁ¤)
+	// - GetOuter(): DLCameraComponent -> DLCameraMode(GetCameraModeInstanceì—ì„œ DLCameraModeStackì˜ Outerë¥¼ DLCameraModeì˜ Outerë¡œ ì§€ì •)
 	return CastChecked<UDLCameraComponent>(GetOuter());
 }
 
@@ -176,7 +176,7 @@ FVector UDLCameraMode::GetPivotLocation() const
 
 	if (const APawn* TargetPawn = Cast<APawn>(TargetActor))
 	{
-		// Crouching»óÅÂ °í·ÁÇÏ¿© ³ôÀÌ Á¶Á¤
+		// Crouchingìƒíƒœ ê³ ë ¤í•˜ì—¬ ë†’ì´ ì¡°ì •
 		if (const ACharacter* TargetCharacter = Cast<ACharacter>(TargetPawn))
 		{
 			const ACharacter* TargetCharacterCDO = TargetCharacter->GetClass()->GetDefaultObject<ACharacter>();
@@ -194,7 +194,7 @@ FVector UDLCameraMode::GetPivotLocation() const
 
 			return TargetCharacter->GetActorLocation() + (FVector::UpVector * HeightAdjustment);
 		}
-		// BaseEyeHeight¸¦ °í·ÁÇÏ¿©, ViewLocationÀ» ¹İÈ¯ÇÔ
+		// BaseEyeHeightë¥¼ ê³ ë ¤í•˜ì—¬, ViewLocationì„ ë°˜í™˜í•¨
 		return TargetPawn->GetPawnViewLocation();
 	}
 
@@ -208,7 +208,7 @@ FRotator UDLCameraMode::GetPivotRotation() const
 
 	if (const APawn* TargetPawn = Cast<APawn>(TargetActor))
 	{
-		// º¸Åë PawnÀÇ ControlRotationÀ» ¹İÈ¯
+		// ë³´í†µ Pawnì˜ ControlRotationì„ ë°˜í™˜
 		return TargetPawn->GetViewRotation();
 	}
 
@@ -224,22 +224,22 @@ UDLCameraMode* UDLCameraModeStack::GetCameraModeInstance(TSubclassOf<UDLCameraMo
 {
 	check(CameraModeClass);
 
-	// CameraModeInstances¿¡¼­ ¸ÕÀú »ı¼ºµÇ¾îÀÖ´ÂÁö È®ÀÎ ÈÄ, ¹İÈ¯ÇÑ´Ù:
+	// CameraModeInstancesì—ì„œ ë¨¼ì € ìƒì„±ë˜ì–´ìˆëŠ”ì§€ í™•ì¸ í›„, ë°˜í™˜í•œë‹¤:
 	for (UDLCameraMode* CameraMode : CameraModeInstances)
 	{
-		// CameraMode´Â UClass¸¦ ºñ±³ÇÑ´Ù:
-		// - Áï, CameraMode´Â Å¬·¡½º Å¸ÀÔ´ç ÇÑ°³¾¿ »ı¼º
+		// CameraModeëŠ” UClassë¥¼ ë¹„êµí•œë‹¤:
+		// - ì¦‰, CameraModeëŠ” í´ë˜ìŠ¤ íƒ€ì…ë‹¹ í•œê°œì”© ìƒì„±
 		if ((CameraMode != nullptr) && (CameraMode->GetClass() == CameraModeClass))
 		{
 			return CameraMode;
 		}
 	}
 
-	// CameraModeClass¿¡ ¾Ë¸Â´Â CameraModeÀÇ ÀÎ½ºÅÏ½º°¡ ¾ø´Ù¸é »ı¼ºÇÑ´Ù:
+	// CameraModeClassì— ì•Œë§ëŠ” CameraModeì˜ ì¸ìŠ¤í„´ìŠ¤ê°€ ì—†ë‹¤ë©´ ìƒì„±í•œë‹¤:
 	UDLCameraMode* NewCameraMode = NewObject<UDLCameraMode>(GetOuter(), CameraModeClass, NAME_None, RF_NoFlags);
 	check(NewCameraMode);
 
-	// CameraModeInstances´Â CameraModeClass¿¡ ¸Â´Â ÀÎ½ºÅÏ½º¸¦ °ü¸®ÇÏ´Â ÄÁÅ×ÀÌ³Ê
+	// CameraModeInstancesëŠ” CameraModeClassì— ë§ëŠ” ì¸ìŠ¤í„´ìŠ¤ë¥¼ ê´€ë¦¬í•˜ëŠ” ì»¨í…Œì´ë„ˆ
 	CameraModeInstances.Add(NewCameraMode);
 
 	return NewCameraMode;
@@ -257,16 +257,16 @@ void UDLCameraModeStack::PushCameraMode(TSubclassOf<UDLCameraMode>& CameraModeCl
 	int32 StackSize = CameraModeStack.Num();
 	if ((StackSize > 0) && (CameraModeStack[0] == CameraMode))
 	{
-		// CameraModeStack[0] °¡Àå ÃÖ±Ù¿¡ ÀÌ¹Ì CameraMode°¡ StackingµÇ¾úÀ¸¹Ç·Î ±×³É ¸®ÅÏ
+		// CameraModeStack[0] ê°€ì¥ ìµœê·¼ì— ì´ë¯¸ CameraModeê°€ Stackingë˜ì—ˆìœ¼ë¯€ë¡œ ê·¸ëƒ¥ ë¦¬í„´
 		return;
 	}
 
-	// ExistingStackIndex´Â CameraModeStack¿¡¼­ CameraMode¿¡ ¸Â´Â Index¸¦ Ã£À½
-	// ExistingStackContributionÀº À§¿¡¼­ ¾Æ·¡·Î ÃÖÁ¾ BlendWeight °ªÀ» Ã£±â À§ÇØ ÃÊ±â°ªÀ¸·Î 1.0À¸·Î ¼³Á¤
+	// ExistingStackIndexëŠ” CameraModeStackì—ì„œ CameraModeì— ë§ëŠ” Indexë¥¼ ì°¾ìŒ
+	// ExistingStackContributionì€ ìœ„ì—ì„œ ì•„ë˜ë¡œ ìµœì¢… BlendWeight ê°’ì„ ì°¾ê¸° ìœ„í•´ ì´ˆê¸°ê°’ìœ¼ë¡œ 1.0ìœ¼ë¡œ ì„¤ì •
 	int32 ExistingStackIndex = INDEX_NONE;
 	float ExistingStackContribution = 1.0f;
 
-	// BlendWeight´Â ½±°Ô ÀÌÇØÇÏÀÚ¸é ºí·»µùÀÌ °æ°úµÈ ºñÀ²ÀÌ°í ExistingStackCOntribution´Â Ä«¸Ş¶óµéÀÇ °æ°ú ºñÀ²¿¡ ´ëÇÑ ÇÕÀ» 1.0À¸·Î À¯ÁöÇÏ±â À§ÇÑ °ø½Ä
+	// BlendWeightëŠ” ì‰½ê²Œ ì´í•´í•˜ìë©´ ë¸”ë Œë”©ì´ ê²½ê³¼ëœ ë¹„ìœ¨ì´ê³  ExistingStackCOntributionëŠ” ì¹´ë©”ë¼ë“¤ì˜ ê²½ê³¼ ë¹„ìœ¨ì— ëŒ€í•œ í•©ì„ 1.0ìœ¼ë¡œ ìœ ì§€í•˜ê¸° ìœ„í•œ ê³µì‹
 	/**
 	 * BlendWeight    |    ExistingStackCOntribution    |    ExistingStackCOntribution (accumulated)
 	 * 0.1f           |    (1.0f) * 0.1f = 0.1f         |    (1.0f - 0.1f) = 0.9f
@@ -289,7 +289,7 @@ void UDLCameraModeStack::PushCameraMode(TSubclassOf<UDLCameraMode>& CameraModeCl
 		}
 	}
 
-	// CameraMode¸¦ TopÀ¸·Î ¹İ¿µÇÏ±â À§ÇØ Á¦°ÅÇÏ¿© ´Ù½Ã Push
+	// CameraModeë¥¼ Topìœ¼ë¡œ ë°˜ì˜í•˜ê¸° ìœ„í•´ ì œê±°í•˜ì—¬ ë‹¤ì‹œ Push
 	if (ExistingStackIndex != INDEX_NONE)
 	{
 		CameraModeStack.RemoveAt(ExistingStackIndex);
@@ -300,8 +300,8 @@ void UDLCameraModeStack::PushCameraMode(TSubclassOf<UDLCameraMode>& CameraModeCl
 		ExistingStackContribution = 0.0f;
 	}
 
-	// BlendTimeÀÌ 0º¸´Ù Å©´Ù´Â °ÍÀº BlendÀ» ¾ó¸¶ ½Ã°£µ¿¾È ÁøÇàÇÔÀ» ÀÇ¹Ì µû¶ó¼­, ExistingStackContributionÀ» Àû¿ë
-	// - µû¶ó¼­ BlendÇÏÁö ¾Ê´Â´Ù¸é BlendWeight¸¦ 1.0À» ³Ö¾î »õ·Î ³Ö´Â CameraMode¸¸ Àû¿ëÇÒ °ÍÀÌ´Ù
+	// BlendTimeì´ 0ë³´ë‹¤ í¬ë‹¤ëŠ” ê²ƒì€ Blendì„ ì–¼ë§ˆ ì‹œê°„ë™ì•ˆ ì§„í–‰í•¨ì„ ì˜ë¯¸ ë”°ë¼ì„œ, ExistingStackContributionì„ ì ìš©
+	// - ë”°ë¼ì„œ Blendí•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ BlendWeightë¥¼ 1.0ì„ ë„£ì–´ ìƒˆë¡œ ë„£ëŠ” CameraModeë§Œ ì ìš©í•  ê²ƒì´ë‹¤
 	const bool bShouldBlend = ((CameraMode->BlendTime > 0.f) && (StackSize > 0));
 	const float BlendWeight = (bShouldBlend ? ExistingStackContribution : 1.0f);
 	CameraMode->SetBlendWeight(BlendWeight);
@@ -312,10 +312,10 @@ void UDLCameraModeStack::PushCameraMode(TSubclassOf<UDLCameraMode>& CameraModeCl
 
 void UDLCameraModeStack::EvaluateStack(float DeltaTime, FDLCameraModeView& OutCameraModeView)
 {
-	// Top(ÃÖ½Å) -> Bottom [0 -> Num]±îÁö ¼øÂ÷ÀûÀ¸·Î Stack¿¡ ÀÖ´Â CameraMode ¾÷µ¥ÀÌÆ®
+	// Top(ìµœì‹ ) -> Bottom [0 -> Num]ê¹Œì§€ ìˆœì°¨ì ìœ¼ë¡œ Stackì— ìˆëŠ” CameraMode ì—…ë°ì´íŠ¸
 	UpdateStack(DeltaTime);
 
-	// Bottom -> Top±îÁö CameraModeStack¿¡ ´ëÇØ Blending ÁøÇà
+	// Bottom -> Topê¹Œì§€ CameraModeStackì— ëŒ€í•´ Blending ì§„í–‰
 	BlendStack(OutCameraModeView);
 }
 
@@ -327,7 +327,7 @@ void UDLCameraModeStack::UpdateStack(float DeltaTime)
 		return;
 	}
 
-	// CameraModeStackÀ» ¼øÈ¸ÇÏ¸ç, CameraMode¸¦ ¾÷µ¥ÀÌÆ®ÇÑ´Ù
+	// CameraModeStackì„ ìˆœíšŒí•˜ë©°, CameraModeë¥¼ ì—…ë°ì´íŠ¸í•œë‹¤
 	int32 RemoveCount = 0;
 	int32 RemoveIndex = INDEX_NONE;
 	for (int32 StackIndex = 0; StackIndex < StackSize; ++StackIndex)
@@ -336,7 +336,7 @@ void UDLCameraModeStack::UpdateStack(float DeltaTime)
 		check(CameraMode);
 		CameraMode->UpdateCameraMode(DeltaTime);
 
-		// CameraModeÀÇ BlendWeight°¡ 1.0¿¡ µµ´ŞÇß´Ù¸é, ±× ÀÌÈÄ CameraMode¸¦ Á¦°Å
+		// CameraModeì˜ BlendWeightê°€ 1.0ì— ë„ë‹¬í–ˆë‹¤ë©´, ê·¸ ì´í›„ CameraModeë¥¼ ì œê±°
 		if (CameraMode->BlendWeight >= 1.0f)
 		{
 			RemoveIndex = (StackIndex + 1);
@@ -359,11 +359,11 @@ void UDLCameraModeStack::BlendStack(FDLCameraModeView& OutCameraModeView) const
 		return;
 	}
 
-	// CameraMode¸¦ Bottom -> Top ¼ø¼­·Î Blend¸¦ ÁøÇà
+	// CameraModeë¥¼ Bottom -> Top ìˆœì„œë¡œ Blendë¥¼ ì§„í–‰
 	const UDLCameraMode* CameraMode = CameraModeStack[StackSize - 1];
 	check(CameraMode);
 
-	// ÃÖÇÏ´Ü CameraMode´Â BlendWeight°¡ 1·Î °íÁ¤
+	// ìµœí•˜ë‹¨ CameraModeëŠ” BlendWeightê°€ 1ë¡œ ê³ ì •
 	OutCameraModeView = CameraMode->View;
 	for (int32 StackIndex = (StackSize - 2); StackIndex >= 0; --StackIndex)
 	{
